@@ -143,6 +143,16 @@ if (!$is_participant) {
                     <div class="result-points" id="resultPoints">+150 points</div>
                 </div>
 
+                <!-- Attente des autres participants -->
+                <div class="waiting-participants" id="waitingParticipants" style="display: none;">
+                    <div class="waiting-participants-icon">⏳</div>
+                    <h3>En attente des autres participants...</h3>
+                    <p>Vous avez répondu ! Attendez que tous les participants terminent.</p>
+                    <div class="participants-progress" id="participantsProgress">
+                        <!-- Progress des participants sera affiché ici -->
+                    </div>
+                </div>
+
                 <!-- Attente de la prochaine question -->
                 <div class="waiting-next" id="waitingNext" style="display: none;">
                     <div class="waiting-next-icon">⏭️</div>
@@ -218,10 +228,12 @@ if (!$is_participant) {
         const PARTICIPANT_ID = <?php echo $participant_data['id']; ?>;
         
         let currentQuestion = null;
+        let currentQuestionId = null;
         let questionTimer = null;
         let timeLeft = 0;
         let hasAnswered = false;
         let gameInterval = null;
+        let isTimerRunning = false;
         
         // Initialiser le jeu
         document.addEventListener('DOMContentLoaded', function() {
@@ -243,6 +255,17 @@ if (!$is_participant) {
                 
                 if (document.getElementById('waitingState').style.display !== 'none') {
                     loadParticipants();
+                }
+                
+                // Mettre à jour le progrès si on attend les participants
+                if (document.getElementById('waitingParticipants').style.display !== 'none') {
+                    updateParticipantsProgress();
+                }
+                
+                // Ne vérifier la question courante que si on n'est pas en train de répondre
+                if (document.getElementById('activeState').style.display !== 'none' && 
+                    !isTimerRunning) {
+                    checkCurrentQuestion();
                 }
             }, 2000);
         }
@@ -309,10 +332,28 @@ if (!$is_participant) {
                 });
                 
                 const result = await response.json();
+                console.log('Question actuelle depuis API:', result);
+                
                 if (result.success) {
                     if (result.question && result.session_status === 'active') {
-                        displayQuestion(result.question);
+                        // Vérifier si c'est une nouvelle question
+                        if (!currentQuestionId || currentQuestionId !== result.question.id) {
+                            console.log('Nouvelle question détectée:', result.question.id);
+                            // Vérifier si le joueur a déjà répondu à cette question
+                            checkIfAlreadyAnswered(result.question);
+                        } else {
+                            console.log('Même question, pas de redisplay');
+                        }
                     } else {
+                        console.log('Pas de question active ou session pas active');
+                        if (isTimerRunning) {
+                            // Arrêter le timer et réinitialiser
+                            if (questionTimer) {
+                                clearInterval(questionTimer);
+                                questionTimer = null;
+                                isTimerRunning = false;
+                            }
+                        }
                         showWaitingNext();
                     }
                 }
@@ -321,8 +362,95 @@ if (!$is_participant) {
             }
         }
         
+        async function checkIfAlreadyAnswered(question) {
+            try {
+                // Vérifier si le joueur a déjà répondu à cette question
+                const response = await fetch('../api/player_response.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'check_answer_exists',
+                        session_id: SESSION_ID,
+                        question_id: question.id,
+                        user_id: USER_ID
+                    })
+                });
+                
+                const result = await response.json();
+                console.log('Vérification réponse existante:', result);
+                
+                if (result.success && result.has_answered) {
+                    console.log('Joueur a déjà répondu, affichage attente participants');
+                    currentQuestion = question;
+                    currentQuestionId = question.id;
+                    hasAnswered = true;
+                    
+                    // Récupérer la réponse du joueur pour afficher le résultat
+                    showPreviousAnswer(question);
+                } else {
+                    console.log('Joueur n\'a pas encore répondu, affichage question');
+                    displayQuestion(question);
+                }
+            } catch (error) {
+                console.error('Erreur lors de la vérification:', error);
+                // En cas d'erreur, afficher la question par défaut
+                displayQuestion(question);
+            }
+        }
+        
+        async function showPreviousAnswer(question) {
+            try {
+                // Récupérer la réponse du joueur pour cette question
+                const response = await fetch('../api/player_response.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'get_my_response',
+                        session_id: SESSION_ID,
+                        question_id: question.id
+                    })
+                });
+                
+                const result = await response.json();
+                console.log('Réponse précédente du joueur:', result);
+                
+                if (result.success && result.response) {
+                    const response_data = result.response;
+                    
+                    // Afficher le résultat de la réponse précédente
+                    const isCorrect = response_data.is_correct == 1;
+                    const pointsEarned = response_data.points_earned || 0;
+                    
+                    // Afficher brièvement le résultat puis passer à l'attente
+                    showResult(isCorrect, pointsEarned);
+                    
+                    // Passer directement à l'attente des participants après 1 seconde (plus court)
+                    setTimeout(() => {
+                        showWaitingParticipants();
+                    }, 1000);
+                } else {
+                    // Si on ne peut pas récupérer la réponse, aller directement à l'attente
+                    showWaitingParticipants();
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération de la réponse:', error);
+                showWaitingParticipants();
+            }
+        }
+        
         function displayQuestion(question) {
+            console.log('DisplayQuestion appelée avec:', question);
+            
+            // Vérifier si c'est la même question pour éviter de redémarrer le timer
+            if (currentQuestionId === question.id) {
+                console.log('Même question, pas de redisplay');
+                return;
+            }
+            
+            console.log('Affichage nouvelle question:', question.id);
+            
             currentQuestion = question;
+            currentQuestionId = question.id;
             hasAnswered = false;
             
             // Masquer les autres éléments
@@ -338,27 +466,69 @@ if (!$is_participant) {
             document.getElementById('questionPoints').textContent = `${question.points} points`;
             document.getElementById('questionText').textContent = question.question_text;
             
+            console.log('Réponses de la question:', question.answers);
+            
             // Afficher les réponses
             const answersContainer = document.getElementById('answersContainer');
-            answersContainer.innerHTML = question.answers.map((answer, index) => `
-                <button class="answer-btn" onclick="selectAnswer(${answer.id}, this)" data-answer-id="${answer.id}">
-                    <span class="answer-letter">${String.fromCharCode(65 + index)}</span>
-                    <span class="answer-text">${answer.text}</span>
-                </button>
-            `).join('');
+            
+            if (!question.answers || question.answers.length === 0) {
+                console.error('Aucune réponse trouvée pour cette question');
+                answersContainer.innerHTML = '<p style="text-align: center; color: red;">Aucune réponse disponible pour cette question</p>';
+                return;
+            }
+            
+            answersContainer.innerHTML = question.answers.map((answer, index) => {
+                console.log(`Réponse ${index}:`, answer);
+                
+                // Gérer les cas où answer pourrait être null ou incomplet
+                const answerId = answer?.id || 0;
+                const answerText = answer?.answer_text || answer?.text || 'Réponse non disponible';
+                
+                if (!answerId) {
+                    console.error('ID de réponse manquant:', answer);
+                    return '';
+                }
+                
+                return `
+                    <button class="answer-btn" onclick="selectAnswer(${answerId}, this)" data-answer-id="${answerId}">
+                        <span class="answer-letter">${String.fromCharCode(65 + index)}</span>
+                        <span class="answer-text">${answerText}</span>
+                    </button>
+                `;
+            }).filter(html => html !== '').join('');
+            
+            console.log('HTML des réponses généré:', answersContainer.innerHTML);
+            console.log('Nombre de boutons créés:', answersContainer.children.length);
+            
+            // Vérifier que les boutons sont bien créés
+            if (answersContainer.children.length === 0) {
+                console.error('Aucun bouton de réponse créé !');
+                answersContainer.innerHTML = '<p style="text-align: center; color: red;">Erreur lors de l\'affichage des réponses</p>';
+                return;
+            }
+            
+            console.log('Démarrage du timer...');
             
             // Démarrer le timer
             startQuestionTimer(question.time_limit);
         }
         
         function startQuestionTimer(timeLimit) {
+            // Arrêter le timer précédent s'il existe
+            if (questionTimer) {
+                clearInterval(questionTimer);
+                questionTimer = null;
+            }
+            
             timeLeft = timeLimit;
+            isTimerRunning = true;
             const timerValue = document.getElementById('timerValue');
             const timerProgress = document.getElementById('timerProgress');
             
-            if (questionTimer) {
-                clearInterval(questionTimer);
-            }
+            // Mettre à jour l'affichage initial
+            timerValue.textContent = timeLeft;
+            timerProgress.style.width = '0%';
+            timerProgress.style.backgroundColor = '#10b981';
             
             questionTimer = setInterval(function() {
                 timeLeft--;
@@ -378,6 +548,8 @@ if (!$is_participant) {
                 
                 if (timeLeft <= 0) {
                     clearInterval(questionTimer);
+                    questionTimer = null;
+                    isTimerRunning = false;
                     if (!hasAnswered) {
                         showTimeUp();
                     }
@@ -386,8 +558,12 @@ if (!$is_participant) {
         }
         
         async function selectAnswer(answerId, buttonElement) {
-            if (hasAnswered) return;
+            if (hasAnswered) {
+                console.log('Déjà répondu, ignorer');
+                return;
+            }
             
+            console.log('Sélection de la réponse:', answerId);
             hasAnswered = true;
             const responseTime = (currentQuestion.time_limit - timeLeft) * 1000; // en millisecondes
             
@@ -400,6 +576,7 @@ if (!$is_participant) {
             buttonElement.classList.add('selected');
             
             try {
+                console.log('Envoi de la réponse à l\'API...');
                 const response = await fetch('../api/player_response.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -413,20 +590,26 @@ if (!$is_participant) {
                 });
                 
                 const result = await response.json();
+                console.log('Résultat de l\'API:', result);
+                
                 if (result.success) {
                     showResult(result.is_correct, result.points_earned);
                     updatePlayerScore(result.points_earned);
                 } else {
                     console.error('Erreur lors de l\'envoi de la réponse:', result.message);
+                    alert('Erreur: ' + result.message);
                 }
             } catch (error) {
                 console.error('Erreur:', error);
+                alert('Erreur de connexion: ' + error.message);
             }
         }
         
-        function showResult(isCorrect, pointsEarned) {
+        function showResult(isCorrect, pointsEarned, isTimeUp = false) {
             if (questionTimer) {
                 clearInterval(questionTimer);
+                questionTimer = null;
+                isTimerRunning = false;
             }
             
             // Masquer la question et le timer
@@ -439,7 +622,12 @@ if (!$is_participant) {
             const messageElement = document.getElementById('resultMessage');
             const pointsElement = document.getElementById('resultPoints');
             
-            if (isCorrect) {
+            if (isTimeUp) {
+                iconElement.textContent = '⏰';
+                iconElement.className = 'result-icon timeout';
+                messageElement.textContent = 'Temps écoulé !';
+                pointsElement.textContent = '+0 point';
+            } else if (isCorrect) {
                 iconElement.textContent = '✅';
                 iconElement.className = 'result-icon correct';
                 messageElement.textContent = 'Bonne réponse !';
@@ -453,9 +641,9 @@ if (!$is_participant) {
             
             resultElement.style.display = 'block';
             
-            // Passer à l'attente après 3 secondes
+            // Passer à l'attente des participants après 3 secondes
             setTimeout(() => {
-                showWaitingNext();
+                showWaitingParticipants();
             }, 3000);
         }
         
@@ -465,14 +653,89 @@ if (!$is_participant) {
                 btn.disabled = true;
             });
             
-            showResult(false, 0);
+            // Marquer comme ayant "répondu" (même si pas de réponse)
+            hasAnswered = true;
+            
+            // Afficher le résultat "temps écoulé" puis passer à l'attente des participants
+            showResult(false, 0, true);
+        }
+        
+        function showWaitingParticipants() {
+            document.getElementById('questionResult').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('questionTimer').style.display = 'none';
+            document.getElementById('waitingNext').style.display = 'none';
+            document.getElementById('waitingParticipants').style.display = 'block';
+            
+            // Démarrer le suivi des participants
+            updateParticipantsProgress();
         }
         
         function showWaitingNext() {
             document.getElementById('questionResult').style.display = 'none';
             document.getElementById('questionContainer').style.display = 'none';
             document.getElementById('questionTimer').style.display = 'none';
+            document.getElementById('waitingParticipants').style.display = 'none';
             document.getElementById('waitingNext').style.display = 'block';
+            
+            // Réinitialiser pour permettre la prochaine question
+            currentQuestionId = null;
+        }
+        
+        async function updateParticipantsProgress() {
+            if (!currentQuestion) return;
+            
+            try {
+                // Obtenir les statistiques de réponses pour la question courante
+                const response = await fetch('../api/player_response.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'get_question_stats',
+                        session_id: SESSION_ID,
+                        question_id: currentQuestion.id
+                    })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayParticipantsProgress(result.total_responses, result.stats);
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération du progrès:', error);
+            }
+        }
+        
+        function displayParticipantsProgress(totalResponses, stats) {
+            const progressContainer = document.getElementById('participantsProgress');
+            
+            // Obtenir le nombre total de participants
+            loadParticipants().then(() => {
+                const participantCount = document.getElementById('participantCountWaiting')?.textContent || '?';
+                
+                progressContainer.innerHTML = `
+                    <div class="progress-info">
+                        <div class="progress-text">
+                            <strong>${totalResponses}</strong> sur <strong>${participantCount}</strong> participants ont répondu
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${participantCount > 0 ? (totalResponses / participantCount) * 100 : 0}%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-message">
+                        ${totalResponses === parseInt(participantCount) ? 
+                            '🎉 Tous les participants ont répondu !' : 
+                            '⏳ En attente des autres participants...'}
+                    </div>
+                `;
+                
+                // Si tous ont répondu, passer à l'attente de la prochaine question après 2 secondes
+                if (totalResponses === parseInt(participantCount)) {
+                    setTimeout(() => {
+                        showWaitingNext();
+                    }, 2000);
+                }
+            });
         }
         
         function updatePlayerScore(pointsEarned) {

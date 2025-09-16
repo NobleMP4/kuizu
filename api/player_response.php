@@ -242,6 +242,79 @@ try {
             ];
             break;
             
+        case 'get_my_response':
+            $session_id = $input['session_id'] ?? null;
+            $question_id = $input['question_id'] ?? null;
+            
+            if (!$session_id || !$question_id) {
+                throw new Exception('Données manquantes');
+            }
+            
+            // Récupérer la réponse du joueur pour cette question spécifique
+            $responseQuery = "SELECT pr.*, a.answer_text, a.is_correct
+                            FROM player_responses pr
+                            JOIN participants p ON pr.participant_id = p.id
+                            JOIN answers a ON pr.answer_id = a.id
+                            WHERE p.session_id = :session_id 
+                            AND p.user_id = :user_id 
+                            AND pr.question_id = :question_id
+                            LIMIT 1";
+            
+            $responseStmt = $conn->prepare($responseQuery);
+            $responseStmt->bindParam(":session_id", $session_id);
+            $responseStmt->bindParam(":user_id", $current_user['id']);
+            $responseStmt->bindParam(":question_id", $question_id);
+            $responseStmt->execute();
+            
+            $response_data = null;
+            if ($responseStmt->rowCount() > 0) {
+                $response_data = $responseStmt->fetch(PDO::FETCH_ASSOC);
+            }
+            
+            $result = ['success' => true, 'response' => $response_data];
+            break;
+            
+        case 'check_answer_exists':
+            $session_id = $input['session_id'] ?? null;
+            $question_id = $input['question_id'] ?? null;
+            $user_id = $input['user_id'] ?? null;
+            
+            if (!$session_id || !$question_id || !$user_id) {
+                throw new Exception('Données manquantes');
+            }
+            
+            // Vérifier que l'utilisateur participe à cette session
+            $participantQuery = "SELECT id FROM participants 
+                               WHERE session_id = :session_id AND user_id = :user_id";
+            $participantStmt = $conn->prepare($participantQuery);
+            $participantStmt->bindParam(":session_id", $session_id);
+            $participantStmt->bindParam(":user_id", $user_id);
+            $participantStmt->execute();
+            
+            if ($participantStmt->rowCount() === 0) {
+                throw new Exception('Vous ne participez pas à cette session');
+            }
+            
+            $participant = $participantStmt->fetch(PDO::FETCH_ASSOC);
+            $participant_id = $participant['id'];
+            
+            // Vérifier si une réponse existe déjà
+            $existingQuery = "SELECT COUNT(*) as count FROM player_responses 
+                            WHERE participant_id = :participant_id AND question_id = :question_id";
+            $existingStmt = $conn->prepare($existingQuery);
+            $existingStmt->bindParam(":participant_id", $participant_id);
+            $existingStmt->bindParam(":question_id", $question_id);
+            $existingStmt->execute();
+            $existingResult = $existingStmt->fetch(PDO::FETCH_ASSOC);
+            
+            $has_answered = $existingResult['count'] > 0;
+            
+            $result = [
+                'success' => true,
+                'has_answered' => $has_answered
+            ];
+            break;
+            
         default:
             throw new Exception('Action non reconnue');
     }

@@ -226,11 +226,16 @@ try {
             if ($session['current_question_id']) {
                 $current_question = $question->getById($session['current_question_id']);
                 
-                // Pour les joueurs, ne pas inclure les réponses correctes
-                if (!User::isAdmin() || $session['admin_id'] != $current_user['id']) {
-                    foreach ($current_question['answers'] as &$answer) {
-                        unset($answer['is_correct']);
+                // Vérifier que la question et ses réponses existent
+                if ($current_question && isset($current_question['answers'])) {
+                    // Pour les joueurs, ne pas inclure les réponses correctes
+                    if (!User::canManageQuizzes() || $session['admin_id'] != $current_user['id']) {
+                        foreach ($current_question['answers'] as &$answer) {
+                            unset($answer['is_correct']);
+                        }
                     }
+                } else {
+                    $current_question = null; // Question invalide
                 }
             }
             
