@@ -1,0 +1,197 @@
+# Configuration Apache pour Kuizu
+# Système de quiz pour jeunes sapeurs-pompiers
+
+# Réécriture d'URL désactivée pour éviter les erreurs de serveur
+# RewriteEngine On
+
+# Page d'accueil par défaut
+DirectoryIndex index.php
+
+# Sécurité - Masquer les informations du serveur
+ServerSignature Off
+
+# Sécurité - Empêcher l'accès aux fichiers sensibles
+<Files ~ "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protéger les fichiers de configuration
+<Files "*.ini">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.conf">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.sql">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protéger les fichiers README et documentation
+<Files "README.md">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "INSTALLATION.md">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Empêcher l'accès direct aux dossiers sensibles (désactivé pour éviter les erreurs)
+# <IfModule mod_rewrite.c>
+#     RewriteRule ^config/ - [F,L]
+#     RewriteRule ^database/ - [F,L]
+#     RewriteRule ^classes/ - [F,L]
+# </IfModule>
+
+# Compression GZIP pour améliorer les performances
+<IfModule mod_deflate.c>
+    # Compresser les fichiers texte
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom_xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Cache des ressources statiques
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    
+    # CSS et JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Polices
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # HTML et XML
+    ExpiresByType text/html "access plus 1 hour"
+    ExpiresByType text/xml "access plus 1 hour"
+    ExpiresByType application/xml "access plus 1 hour"
+    ExpiresByType application/json "access plus 1 hour"
+</IfModule>
+
+# En-têtes de sécurité
+<IfModule mod_headers.c>
+    # Protection contre le clickjacking
+    Header always append X-Frame-Options SAMEORIGIN
+    
+    # Protection XSS
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # Empêcher la détection du type MIME
+    Header set X-Content-Type-Options nosniff
+    
+    # Politique de référent
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Suppression des en-têtes révélant des informations
+    Header unset Server
+    Header unset X-Powered-By
+</IfModule>
+
+# Gestion des erreurs personnalisées
+ErrorDocument 404 /kuizu/error/404.html
+ErrorDocument 403 /kuizu/error/403.html
+ErrorDocument 500 /kuizu/error/500.html
+
+# Optimisation - Désactiver les ETags
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# Limitation de la taille des uploads (ajuster selon les besoins)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+    php_value max_input_vars 3000
+</IfModule>
+
+# Protection contre les attaques par force brute
+<IfModule mod_evasive.c>
+    DOSHashTableSize    3097
+    DOSPageCount        2
+    DOSPageInterval     1
+    DOSSiteCount        50
+    DOSSiteInterval     1
+    DOSBlockingPeriod   600
+</IfModule>
+
+# Désactiver l'affichage du contenu des dossiers
+Options -Indexes
+
+# Suivre les liens symboliques mais pas les includes serveur
+Options +FollowSymLinks -Includes
+
+# Empêcher l'exécution de scripts dans le dossier uploads (si ajouté)
+<Directory "uploads">
+    <Files "*">
+        SetHandler default-handler
+        RemoveHandler .php .phtml .php3 .php4 .php5 .php6
+        RemoveType .php .phtml .php3 .php4 .php5 .php6
+    </Files>
+</Directory>
+
+# Règles de réécriture désactivées pour éviter les erreurs de serveur
+# <IfModule mod_rewrite.c>
+#     # Supprimer le slash final des URLs (sauf pour les dossiers)
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteCond %{THE_REQUEST} /+[^?]+?/[\s?] [NC]
+#     RewriteRule ^(.+?)/?$ /$1 [R=301,L]
+#     
+#     # Forcer l'extension .php à être optionnelle pour certaines pages
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteCond %{REQUEST_FILENAME}.php -f
+#     RewriteRule ^(.*)$ $1.php [L]
+# </IfModule>
+
+# Désactiver la signature du serveur
+<IfModule mod_security.c>
+    SecServerSignature Off
+</IfModule>
+
+# Configuration pour le développement (commenter en production)
+<IfModule mod_php.c>
+    # Affichage des erreurs (désactiver en production)
+    php_flag display_errors Off
+    php_flag display_startup_errors Off
+    php_flag log_errors On
+    
+    # Niveau de rapport d'erreurs
+    php_value error_reporting "E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT"
+    
+    # Configuration des sessions
+    php_value session.cookie_httponly 1
+    php_value session.cookie_secure 0
+    php_value session.use_strict_mode 1
+    php_value session.cookie_samesite "Lax"
+</IfModule>

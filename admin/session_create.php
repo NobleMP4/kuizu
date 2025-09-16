@@ -70,7 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Sidebar -->
         <nav class="admin-sidebar">
             <div class="sidebar-header">
-                <h1>🚒 Kuizu</h1>
+                <div class="logo">
+                    <img src="../assets/images/logo.png" alt="Kuizu" width="60" height="60">
+                    <h1>Kuizu</h1>
+                </div>
                 <p>Administration</p>
             </div>
             
