@@ -231,10 +231,14 @@ class GameSession {
      * Ajouter un participant à la session
      */
     public function addParticipant($session_id, $user_id) {
-        // Vérifier que la session existe et est en attente
+        // Vérifier que la session existe et n'est pas terminée
         $session = $this->getById($session_id);
-        if (!$session || $session['status'] !== 'waiting') {
-            return ['success' => false, 'message' => 'Session non disponible'];
+        if (!$session) {
+            return ['success' => false, 'message' => 'Session non trouvée'];
+        }
+        
+        if ($session['status'] === 'finished') {
+            return ['success' => false, 'message' => 'Cette session est terminée'];
         }
 
         // Vérifier si le participant n'est pas déjà inscrit

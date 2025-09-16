@@ -190,10 +190,14 @@ $participants = $gameSession->getParticipants($session_id);
             </div>
             <div class="modal-body">
                 <div class="qr-display">
-                    <div class="qr-code">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=<?php echo urlencode('http://localhost:8888/kuizu/auth/login.php?session=' . $session['session_code']); ?>" 
-                             alt="QR Code de la session">
-                    </div>
+                <div class="qr-code">
+                    <?php 
+                    require_once __DIR__ . '/../config/app.php';
+                    $session_url = getSessionJoinUrl($session['session_code']);
+                    $qr_url = QR_CODE_API . '?size=' . QR_CODE_SIZE . '&data=' . urlencode($session_url);
+                    ?>
+                    <img src="<?php echo $qr_url; ?>" alt="QR Code de la session">
+                </div>
                     <div class="session-details">
                         <div class="detail-item">
                             <strong>Code de session:</strong>
@@ -202,7 +206,7 @@ $participants = $gameSession->getParticipants($session_id);
                         <div class="detail-item">
                             <strong>URL directe:</strong>
                             <input type="text" 
-                                   value="http://localhost:8888/kuizu/auth/login.php?session=<?php echo $session['session_code']; ?>" 
+                                   value="<?php echo $session_url; ?>" 
                                    readonly onclick="this.select()" class="url-input">
                         </div>
                     </div>

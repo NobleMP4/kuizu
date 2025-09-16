@@ -18,18 +18,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = 'Le code de session doit contenir exactement 6 chiffres';
     } else {
         $gameSession = new GameSession();
-        $result = $gameSession->addParticipant($session_code, $current_user['id']);
         
-        if ($result['success']) {
-            // Sauvegarder la session dans le localStorage côté client
-            $session = $gameSession->getByCode($session_code);
-            $success_message = 'Session rejointe avec succès !';
-            
-            // Rediriger vers la session
-            header('Location: game_session.php?session_id=' . $session['id']);
-            exit();
+        // D'abord, trouver la session par code
+        $session = $gameSession->getByCode($session_code);
+        
+        if (!$session) {
+            $error_message = 'Code de session invalide ou session non trouvée';
         } else {
-            $error_message = $result['message'];
+            // Ensuite, ajouter le participant avec l'ID de session
+            $result = $gameSession->addParticipant($session['id'], $current_user['id']);
+            
+            if ($result['success']) {
+                $success_message = 'Session rejointe avec succès !';
+                
+                // Rediriger vers la session
+                header('Location: game_session.php?session_id=' . $session['id']);
+                exit();
+            } else {
+                $error_message = $result['message'];
+            }
         }
     }
 }

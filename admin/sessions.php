@@ -355,7 +355,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const codeDisplay = document.getElementById('sessionCodeDisplay');
             const urlInput = document.getElementById('sessionUrlInput');
             
-            const sessionUrl = `http://localhost:8888/kuizu/auth/login.php?session=${sessionCode}`;
+            // Obtenir l'URL de base dynamiquement
+            const baseUrl = window.location.protocol + '//' + window.location.host + window.location.pathname.replace(/\/[^\/]*$/, '');
+            const sessionUrl = baseUrl.replace('/admin', '') + `/auth/login.php?session=${sessionCode}`;
             const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(sessionUrl)}`;
             
             qrContainer.innerHTML = `<img src="${qrCodeUrl}" alt="QR Code de la session" style="max-width: 100%; height: auto;">`;

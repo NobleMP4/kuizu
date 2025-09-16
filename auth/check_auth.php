@@ -18,7 +18,12 @@ if (!User::isLoggedIn() && isset($_COOKIE['remember_token']) && isset($_COOKIE['
  */
 function requireAuth($quiz_id = null) {
     if (!User::isLoggedIn()) {
-        $redirect_url = '/kuizu/auth/login.php';
+        $current_dir = dirname($_SERVER['SCRIPT_NAME']);
+        $auth_path = str_replace('/admin', '', $current_dir) . '/auth/login.php';
+        $auth_path = str_replace('/player', '', $auth_path);
+        $auth_path = str_replace('/api', '', $auth_path);
+        
+        $redirect_url = $auth_path;
         if ($quiz_id) {
             $redirect_url .= '?quiz=' . urlencode($quiz_id);
         }
@@ -35,10 +40,13 @@ function requireAdmin() {
     requireAuth();
     
     if (!User::isAdmin()) {
+        $current_dir = dirname($_SERVER['SCRIPT_NAME']);
         if (User::isEncadrant()) {
-            header('Location: /kuizu/admin/dashboard.php');
+            $dashboard_path = str_replace('/admin', '', $current_dir) . '/admin/dashboard.php';
+            header('Location: ' . $dashboard_path);
         } else {
-            header('Location: /kuizu/player/dashboard.php');
+            $dashboard_path = str_replace('/admin', '', $current_dir) . '/player/dashboard.php';
+            header('Location: ' . $dashboard_path);
         }
         exit();
     }
@@ -52,7 +60,9 @@ function requireQuizManager() {
     requireAuth();
     
     if (!User::canManageQuizzes()) {
-        header('Location: /kuizu/player/dashboard.php');
+        $current_dir = dirname($_SERVER['SCRIPT_NAME']);
+        $dashboard_path = str_replace('/admin', '', $current_dir) . '/player/dashboard.php';
+        header('Location: ' . $dashboard_path);
         exit();
     }
 }
@@ -65,10 +75,13 @@ function requireUserManager() {
     requireAuth();
     
     if (!User::canManageUsers()) {
+        $current_dir = dirname($_SERVER['SCRIPT_NAME']);
         if (User::isEncadrant()) {
-            header('Location: /kuizu/admin/dashboard.php');
+            $dashboard_path = str_replace('/admin', '', $current_dir) . '/admin/dashboard.php';
+            header('Location: ' . $dashboard_path);
         } else {
-            header('Location: /kuizu/player/dashboard.php');
+            $dashboard_path = str_replace('/admin', '', $current_dir) . '/player/dashboard.php';
+            header('Location: ' . $dashboard_path);
         }
         exit();
     }

@@ -177,16 +177,18 @@ class Quiz {
      * Générer et sauvegarder un QR code pour le quiz
      */
     public function generateQRCode($id) {
+        require_once __DIR__ . '/../config/app.php';
+        
         $quiz = $this->getById($id);
         if (!$quiz) {
             return ['success' => false, 'message' => 'Quiz non trouvé'];
         }
 
-        // URL du quiz pour les joueurs
-        $quiz_url = "http://localhost:8888/kuizu/auth/login.php?quiz=" . $id;
+        // URL du quiz pour les joueurs (dynamique)
+        $quiz_url = getQuizJoinUrl($id);
         
         // Utiliser une API de génération de QR code (QR Server)
-        $qr_code_url = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" . urlencode($quiz_url);
+        $qr_code_url = QR_CODE_API . "?size=" . QR_CODE_SIZE . "&data=" . urlencode($quiz_url);
         
         // Sauvegarder l'URL du QR code
         $query = "UPDATE " . $this->table_name . " 
