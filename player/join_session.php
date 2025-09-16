@@ -74,9 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="user-info">
                         <span>👤 <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
                     </div>
-                    <button onclick="toggleNav()" class="nav-toggle" id="navToggle">
-                        ☰
-                    </button>
                     <a href="../auth/logout.php" class="btn btn-outline-primary btn-sm">
                         Déconnexion
                     </a>
@@ -582,14 +579,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 </style>
 
-<script>
-function toggleNav() {
-    const nav = document.querySelector('.header-nav');
-    const toggle = document.getElementById('navToggle');
-    
-    nav.classList.toggle('show');
-    toggle.textContent = nav.classList.contains('show') ? '✕' : '☰';
-}
-</script>
 </body>
 </html>
