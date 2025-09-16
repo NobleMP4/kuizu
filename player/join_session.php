@@ -57,8 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <header class="player-header">
             <div class="header-content">
                 <div class="logo">
-                    <h1>🚒 Kuizu</h1>
-                    <span>Jeunes Sapeurs-Pompiers</span>
+                    <img src="../assets/images/logo.png" alt="Kuizu" width="50" height="50">
+                    <div class="logo-text">
+                        <h1>Kuizu</h1>
+                        <span>Jeunes Sapeurs-Pompiers</span>
+                    </div>
                 </div>
                 
                 <nav class="header-nav">
@@ -71,6 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="user-info">
                         <span>👤 <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
                     </div>
+                    <button onclick="toggleNav()" class="nav-toggle" id="navToggle">
+                        ☰
+                    </button>
                     <a href="../auth/logout.php" class="btn btn-outline-primary btn-sm">
                         Déconnexion
                     </a>
@@ -119,16 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             🚀 Rejoindre la session
                         </button>
                     </form>
-
-                    <div class="alternative-methods">
-                        <div class="divider">
-                            <span>ou</span>
-                        </div>
-
-                        <button onclick="startQRScanner()" class="btn btn-secondary btn-lg">
-                            📱 Scanner un QR Code
-                        </button>
-                    </div>
                 </div>
 
                 <!-- Instructions -->
@@ -148,17 +144,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
 
-                        <div class="method-card">
-                            <div class="method-icon">📱</div>
-                            <div class="method-content">
-                                <h4>Par QR Code</h4>
-                                <ol>
-                                    <li>Cliquez sur "Scanner un QR Code"</li>
-                                    <li>Autorisez l'accès à votre caméra</li>
-                                    <li>Pointez votre caméra vers le QR Code</li>
-                                </ol>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="tips-section">
@@ -176,10 +161,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="faq-item">
                             <strong>Le code ne fonctionne pas</strong>
                             <p>Vérifiez que vous avez bien saisi les 6 chiffres et que la session est toujours active.</p>
-                        </div>
-                        <div class="faq-item">
-                            <strong>Je ne peux pas scanner le QR Code</strong>
-                            <p>Assurez-vous d'autoriser l'accès à la caméra et que l'éclairage est suffisant.</p>
                         </div>
                         <div class="faq-item">
                             <strong>La session est pleine</strong>
@@ -600,3 +581,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 </style>
+
+<script>
+function toggleNav() {
+    const nav = document.querySelector('.header-nav');
+    const toggle = document.getElementById('navToggle');
+    
+    nav.classList.toggle('show');
+    toggle.textContent = nav.classList.contains('show') ? '✕' : '☰';
+}
+</script>
+</body>
+</html>
