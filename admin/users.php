@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav class="admin-sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <img src="../assets/images/logo.png" alt="Kuizu" width="40" height="40">
+                    <img src="../assets/images/logo.png" alt="Kuizu" width="60" height="60">
                     <h1>Kuizu</h1>
                 </div>
                 <p>Administration</p>
