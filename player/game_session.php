@@ -61,15 +61,17 @@ if (!$is_participant) {
 </head>
 <body class="game-body">
     <div class="game-layout">
-        <!-- Header de jeu -->
-        <header class="game-header">
+        <!-- Header de jeu compact -->
+        <header class="game-header" id="gameHeader">
             <div class="header-content">
                 <div class="game-info">
-                    <h1><?php echo htmlspecialchars($session['quiz_title']); ?></h1>
+                    <h1 title="<?php echo htmlspecialchars($session['quiz_title']); ?>">
+                        <?php echo htmlspecialchars(strlen($session['quiz_title']) > 20 ? substr($session['quiz_title'], 0, 20) . '...' : $session['quiz_title']); ?>
+                    </h1>
                     <div class="game-meta">
                         <span class="player-name">👤 <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
                         <span class="session-code">Code: <?php echo $session['session_code']; ?></span>
-                        <span class="player-score">🏆 <span id="playerScore"><?php echo $participant_data['total_score']; ?></span> points</span>
+                        <span class="player-score">🏆 <span id="playerScore"><?php echo $participant_data['total_score']; ?></span> pts</span>
                     </div>
                 </div>
                 
@@ -77,14 +79,17 @@ if (!$is_participant) {
                     <div class="status-indicator status-<?php echo $session['status']; ?>" id="gameStatus">
                         <?php 
                         $status_labels = [
-                            'waiting' => '⏳ En attente',
-                            'active' => '▶️ En cours',
-                            'paused' => '⏸️ En pause',
-                            'finished' => '✅ Terminé'
+                            'waiting' => '⏳',
+                            'active' => '▶️',
+                            'paused' => '⏸️',
+                            'finished' => '✅'
                         ];
                         echo $status_labels[$session['status']] ?? $session['status'];
                         ?>
                     </div>
+                    <button onclick="toggleHeader()" class="header-toggle" id="headerToggle">
+                        ↕️
+                    </button>
                 </div>
             </div>
         </header>
@@ -823,6 +828,14 @@ if (!$is_participant) {
             
             sidebar.classList.toggle('collapsed');
             toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '→' : '←';
+        }
+        
+        function toggleHeader() {
+            const header = document.getElementById('gameHeader');
+            const toggle = document.getElementById('headerToggle');
+            
+            header.classList.toggle('collapsed');
+            toggle.textContent = header.classList.contains('collapsed') ? '↓' : '↕️';
         }
         
         // Nettoyer les intervals avant de quitter
