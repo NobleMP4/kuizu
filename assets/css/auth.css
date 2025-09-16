@@ -1,0 +1,240 @@
+/* Styles pour les pages d'authentification */
+
+.auth-body {
+    background: linear-gradient(135deg, #224d71 0%, #1a3a56 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.auth-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-header {
+    text-align: center;
+    padding: 2rem 2rem 1rem;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e6f0ff 100%);
+}
+
+.auth-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-header .logo img {
+    /* Bordures et ombres supprimées */
+}
+
+.auth-header .logo-text h1 {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+}
+
+.auth-header .logo-text p {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.auth-header h2 {
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.auth-form {
+    padding: 2rem;
+}
+
+.auth-form .form-group:last-of-type {
+    margin-bottom: 2rem;
+}
+
+.auth-form input {
+    border: 2px solid var(--gray-200);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.auth-form input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    transform: translateY(-1px);
+}
+
+.auth-form label {
+    font-weight: 600;
+    color: var(--gray-700);
+    font-size: 0.95rem;
+}
+
+.auth-links {
+    text-align: center;
+    padding: 1rem 2rem 2rem;
+    border-top: 1px solid var(--gray-100);
+}
+
+.auth-links p {
+    margin: 0;
+    color: var(--gray-600);
+}
+
+.auth-links a {
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.auth-links a:hover {
+    color: var(--primary-dark);
+}
+
+/* Comptes de démonstration */
+.demo-accounts {
+    background: var(--gray-50);
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--gray-200);
+}
+
+.demo-accounts h3 {
+    font-size: 1rem;
+    color: var(--gray-700);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.demo-account {
+    background: var(--white);
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    border-left: 3px solid var(--primary-color);
+}
+
+.demo-account:last-child {
+    margin-bottom: 0;
+}
+
+.demo-account strong {
+    color: var(--primary-color);
+}
+
+.demo-account small {
+    display: block;
+    color: var(--gray-500);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
+/* Cases à cocher dans les formulaires d'auth */
+.auth-form .checkbox-group {
+    margin: 1.5rem 0;
+}
+
+.auth-form .checkbox-label {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+}
+
+/* Boutons dans les formulaires d'auth */
+.auth-form .btn-primary {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem 2rem;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.3);
+    transition: all 0.3s ease;
+}
+
+.auth-form .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px 0 rgba(220, 38, 38, 0.4);
+}
+
+/* Responsive pour l'authentification */
+@media (max-width: 768px) {
+    .auth-container {
+        max-width: 100%;
+        margin: 0;
+    }
+    
+    .auth-card {
+        border-radius: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .auth-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+    
+    .auth-header h1 {
+        font-size: 2rem;
+    }
+    
+    .auth-form {
+        padding: 1.5rem;
+    }
+    
+    .auth-links,
+    .demo-accounts {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-body {
+        padding: 0;
+    }
+    
+    .auth-header {
+        padding: 1rem 1rem 0.5rem;
+    }
+    
+    .auth-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .auth-form {
+        padding: 1rem;
+    }
+    
+    .auth-links,
+    .demo-accounts {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
