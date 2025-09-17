@@ -111,7 +111,122 @@
     margin: 0;
 }
 
-/* Actions rapides */
+/* Actions principales réorganisées */
+.main-actions {
+    margin-bottom: 2rem;
+}
+
+.primary-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+    color: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.action-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.action-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.action-text h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.25rem;
+}
+
+.action-text p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.secondary-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+}
+
+.btn-icon span {
+    font-size: 1.1rem;
+}
+
+/* Statistiques compactes */
+.stats-compact {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.stats-compact h3 {
+    margin: 0 0 1rem 0;
+    color: var(--gray-800);
+    font-size: 1.1rem;
+}
+
+.stats-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-around;
+}
+
+.stat-mini {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    flex: 1;
+    min-width: 0;
+}
+
+.stat-mini.highlight {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #ea580c 100%);
+    color: var(--white);
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.stat-info {
+    min-width: 0;
+}
+
+.stat-mini .stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.125rem;
+    line-height: 1;
+}
+
+.stat-mini .stat-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    line-height: 1;
+}
+
+/* Actions rapides (legacy) */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -639,11 +754,76 @@
         display: none; /* Masquer sur mobile */
     }
     
-    /* Actions rapides mobile - compact */
-    .quick-actions {
-        grid-template-columns: 1fr 1fr;
+    /* Actions principales mobile */
+    .primary-action {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .action-content {
+        flex-direction: column;
         gap: 0.75rem;
+    }
+    
+    .action-icon {
+        font-size: 2rem;
+    }
+    
+    .action-text h3 {
+        font-size: 1.1rem;
+    }
+    
+    .action-text p {
+        font-size: 0.85rem;
+        display: none; /* Masquer sur mobile */
+    }
+    
+    .secondary-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn-icon {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        justify-content: center;
+    }
+    
+    /* Statistiques compactes mobile */
+    .stats-compact {
+        padding: 1rem;
         margin-bottom: 1.5rem;
+    }
+    
+    .stats-compact h3 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+        text-align: center;
+    }
+    
+    .stats-row {
+        gap: 0.5rem;
+    }
+    
+    .stat-mini {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.5rem;
+        gap: 0.25rem;
+    }
+    
+    .stat-icon {
+        font-size: 1.25rem;
+    }
+    
+    .stat-mini .stat-value {
+        font-size: 1.1rem;
+    }
+    
+    .stat-mini .stat-label {
+        font-size: 0.7rem;
     }
     
     .action-card {

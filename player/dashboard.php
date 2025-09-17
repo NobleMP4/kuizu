@@ -95,37 +95,54 @@ $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
                 <p>Prêt à tester tes connaissances en tant que jeune sapeur-pompier ?</p>
             </div>
 
-            <!-- Actions rapides -->
-            <div class="quick-actions">
-                <div class="action-card primary">
-                    <div class="action-icon">🎮</div>
-                    <h3>Rejoindre une session</h3>
-                    <p>Participe à une session de quiz en temps réel</p>
+            <!-- Actions principales -->
+            <div class="main-actions">
+                <div class="primary-action">
+                    <div class="action-content">
+                        <div class="action-icon">🎮</div>
+                        <div class="action-text">
+                            <h3>Rejoindre une session</h3>
+                            <p>Participe à un quiz en temps réel</p>
+                        </div>
+                    </div>
                     <a href="join_session.php" class="btn btn-primary">Rejoindre</a>
                 </div>
                 
+                <div class="secondary-actions">
+                    <button onclick="startQRScanner()" class="btn btn-secondary btn-icon">
+                        <span>📱</span> Scanner QR
+                    </button>
+                    <a href="history.php" class="btn btn-outline-primary btn-icon">
+                        <span>📊</span> Historique
+                    </a>
+                </div>
             </div>
 
-            <!-- Statistiques personnelles -->
+            <!-- Statistiques compactes -->
             <?php if ($stats['total_games'] > 0): ?>
-                <div class="stats-section">
-                    <h3>Tes statistiques</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value"><?php echo $stats['total_games']; ?></div>
-                            <div class="stat-label">Parties jouées</div>
+                <div class="stats-compact">
+                    <h3>Tes performances</h3>
+                    <div class="stats-row">
+                        <div class="stat-mini">
+                            <span class="stat-icon">🎮</span>
+                            <div class="stat-info">
+                                <div class="stat-value"><?php echo $stats['total_games']; ?></div>
+                                <div class="stat-label">Parties</div>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-value"><?php echo round($stats['avg_score'], 0); ?></div>
-                            <div class="stat-label">Score moyen</div>
+                        <div class="stat-mini highlight">
+                            <span class="stat-icon">🏆</span>
+                            <div class="stat-info">
+                                <div class="stat-value"><?php echo $stats['best_score']; ?></div>
+                                <div class="stat-label">Meilleur</div>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-value"><?php echo round($stats['avg_success_rate'], 1); ?>%</div>
-                            <div class="stat-label">Taux de réussite</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value"><?php echo $stats['best_score']; ?></div>
-                            <div class="stat-label">Meilleur score</div>
+                        <div class="stat-mini">
+                            <span class="stat-icon">📊</span>
+                            <div class="stat-info">
+                                <div class="stat-value"><?php echo round($stats['avg_success_rate'], 0); ?>%</div>
+                                <div class="stat-label">Réussite</div>
+                            </div>
                         </div>
                     </div>
                 </div>
