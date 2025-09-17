@@ -470,12 +470,6 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
                             <button onclick="changePlayerPassword(${player.id}, '${player.first_name} ${player.last_name}')" class="btn-action btn-warning">
                                 <span>🔑</span> Changer le mot de passe
                             </button>
-                            <button onclick="resetPlayerStats(${player.id})" class="btn-action btn-danger">
-                                <span>🗑️</span> Réinitialiser les stats
-                            </button>
-                            <button onclick="sendPlayerNotification(${player.id})" class="btn-action btn-primary">
-                                <span>📧</span> Envoyer notification
-                            </button>
                         </div>
                     </div>
                 </div>
