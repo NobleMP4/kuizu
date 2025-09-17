@@ -113,9 +113,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         Sessions de jeu
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="players.php">
+                        <span class="menu-icon">👥</span>
+                        Joueurs
+                    </a>
+                </li>
                 <li class="menu-item active">
                     <a href="users.php">
-                        <span class="menu-icon">👥</span>
+                        <span class="menu-icon">⚙️</span>
                         Utilisateurs
                     </a>
                 </li>
