@@ -689,6 +689,21 @@
     box-shadow: 0 0 0 3px rgba(34, 77, 113, 0.1);
 }
 
+.form-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    background: var(--white);
+    cursor: pointer;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(34, 77, 113, 0.1);
+}
+
 .players-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -780,6 +795,37 @@
     padding: 1rem;
     background: var(--gray-50);
     border-radius: var(--border-radius);
+}
+
+.stat-mini {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.stat-mini .stat-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.stat-mini .stat-info {
+    min-width: 0;
+}
+
+.stat-mini .stat-value {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.125rem;
+    line-height: 1;
+    color: var(--gray-800);
+}
+
+.stat-mini .stat-label {
+    font-size: 0.7rem;
+    color: var(--gray-600);
+    line-height: 1;
 }
 
 .player-footer {

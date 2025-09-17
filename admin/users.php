@@ -200,14 +200,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <p>Joueurs</p>
                         </div>
                     </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">🎮</div>
-                        <div class="stat-content">
-                            <h3><?php echo count(array_filter($user_stats, fn($s) => $s['total_games'] > 0)); ?></h3>
-                            <p>Joueurs actifs</p>
-                        </div>
-                    </div>
                 </div>
             </div>
 
