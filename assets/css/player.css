@@ -634,14 +634,16 @@
     /* Menu burger */
     .burger-menu {
         display: inline-block !important;
-        background: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: var(--white);
-        padding: 0.375rem 0.5rem;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: var(--transition);
+        background: rgba(255, 255, 255, 0.2) !important;
+        border: none !important;
+        color: var(--white) !important;
+        padding: 0.375rem 0.5rem !important;
+        border-radius: var(--border-radius) !important;
+        cursor: pointer !important;
+        font-size: 0.9rem !important;
+        transition: var(--transition) !important;
+        position: relative !important;
+        z-index: 10 !important;
     }
     
     .burger-menu:hover {
@@ -665,6 +667,8 @@
     .burger-dropdown.show {
         display: block !important;
         animation: slideDown 0.3s ease;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     @keyframes slideDown {

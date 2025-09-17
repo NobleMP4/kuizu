@@ -196,14 +196,41 @@ $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
     <script>
         // Fonction pour toggle le menu burger
         function toggleBurgerMenu() {
+            console.log('toggleBurgerMenu appelée');
             const dropdown = document.getElementById('burgerDropdown');
             const burgerBtn = document.getElementById('burgerBtn');
+            
+            console.log('dropdown:', dropdown);
+            console.log('burgerBtn:', burgerBtn);
             
             if (dropdown && burgerBtn) {
                 dropdown.classList.toggle('show');
                 burgerBtn.textContent = dropdown.classList.contains('show') ? '✕' : '☰';
+                console.log('Menu toggled, classe show:', dropdown.classList.contains('show'));
+            } else {
+                console.error('Éléments non trouvés');
             }
         }
+        
+        // Test au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page chargée, vérification du menu burger...');
+            const burgerBtn = document.getElementById('burgerBtn');
+            const dropdown = document.getElementById('burgerDropdown');
+            
+            if (burgerBtn) {
+                console.log('Bouton burger trouvé');
+                burgerBtn.style.border = '2px solid red'; // Test visuel temporaire
+            } else {
+                console.error('Bouton burger non trouvé');
+            }
+            
+            if (dropdown) {
+                console.log('Dropdown trouvé');
+            } else {
+                console.error('Dropdown non trouvé');
+            }
+        });
         
         // Fermer le menu si on clique ailleurs
         document.addEventListener('click', function(event) {
