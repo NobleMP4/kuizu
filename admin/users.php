@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Utilisateurs - Kuizu Sapeurs-Pompiers</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/admin.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div class="admin-layout">
@@ -128,9 +128,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
             
             <div class="sidebar-footer">
-                <div class="user-info">
-                    <strong><?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></strong>
-                    <small><?php echo $current_user['role'] === 'admin' ? 'Administrateur' : 'Encadrant'; ?></small>
+                <div class="user-info" style="margin-bottom: 1rem; text-align: center;">
+                    <strong style="display: block; margin-bottom: 0.25rem; color: white; font-size: 0.9rem;">
+                        <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?>
+                    </strong>
+                    <small style="display: block; color: rgba(255,255,255,0.8); font-size: 0.8rem;">
+                        <?php echo $current_user['role'] === 'admin' ? 'Administrateur' : 'Encadrant'; ?>
+                    </small>
                 </div>
                 <a href="../auth/logout.php" class="btn btn-outline-light btn-sm">
                     Déconnexion
