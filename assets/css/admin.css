@@ -103,13 +103,17 @@
 }
 
 .user-info strong {
-    display: block;
-    margin-bottom: 0.25rem;
+    display: block !important;
+    margin-bottom: 0.25rem !important;
+    color: var(--white) !important;
+    font-size: 0.9rem !important;
 }
 
 .user-info small {
-    opacity: 0.7;
-    font-size: 0.85rem;
+    display: block !important;
+    opacity: 0.7 !important;
+    font-size: 0.85rem !important;
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Bouton de déconnexion dans la sidebar */
