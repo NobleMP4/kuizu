@@ -55,9 +55,9 @@ if (!$is_participant) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($session['quiz_title']); ?> - Kuizu</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/player.css">
-    <link rel="stylesheet" href="../assets/css/game.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/player.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/game.css?v=<?php echo time(); ?>">
 </head>
 <body class="game-body">
     <div class="game-layout">

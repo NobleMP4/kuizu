@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialiser l'interface joueur
  */
 function initPlayerInterface() {
+    // Initialiser le header mobile
+    initMobileHeader();
+    
     // Animation des cartes au chargement
     animateCards();
     
@@ -20,6 +23,42 @@ function initPlayerInterface() {
     
     // Vérifier les sessions en cours
     checkActiveSession();
+}
+
+/**
+ * Initialiser le header mobile optimisé
+ */
+function initMobileHeader() {
+    // Vérifier si on est sur mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // Ajouter une classe pour identifier les headers mobiles
+        const header = document.querySelector('.player-header');
+        if (header) {
+            header.classList.add('mobile-optimized');
+        }
+        
+        // Optimiser le bouton de déconnexion
+        const logoutBtn = document.querySelector('.btn-sm');
+        if (logoutBtn) {
+            logoutBtn.setAttribute('title', 'Déconnexion');
+        }
+    }
+    
+    // Écouter le redimensionnement de la fenêtre
+    window.addEventListener('resize', function() {
+        const newIsMobile = window.innerWidth <= 768;
+        const header = document.querySelector('.player-header');
+        
+        if (header) {
+            if (newIsMobile) {
+                header.classList.add('mobile-optimized');
+            } else {
+                header.classList.remove('mobile-optimized');
+            }
+        }
+    });
 }
 
 /**

@@ -71,8 +71,8 @@ $score_evolution = array_reverse($evolutionStmt->fetchAll(PDO::FETCH_ASSOC));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon historique - Kuizu Sapeurs-Pompiers</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/player.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/player.css?v=<?php echo time(); ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -81,8 +81,11 @@ $score_evolution = array_reverse($evolutionStmt->fetchAll(PDO::FETCH_ASSOC));
         <header class="player-header">
             <div class="header-content">
                 <div class="logo">
-                    <h1>🚒 Kuizu</h1>
-                    <span>Jeunes Sapeurs-Pompiers</span>
+                    <img src="../assets/images/logo.png" alt="Kuizu" width="50" height="50">
+                    <div class="logo-text">
+                        <h1>Kuizu</h1>
+                        <span>Jeunes Sapeurs-Pompiers</span>
+                    </div>
                 </div>
                 
                 <nav class="header-nav">

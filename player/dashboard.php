@@ -96,12 +96,6 @@ $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
                     <a href="join_session.php" class="btn btn-primary">Rejoindre</a>
                 </div>
                 
-                <div class="action-card secondary">
-                    <div class="action-icon">📱</div>
-                    <h3>Scanner un QR Code</h3>
-                    <p>Utilise ton téléphone pour scanner le QR code d'un quiz</p>
-                    <button onclick="startQRScanner()" class="btn btn-secondary">Scanner</button>
-                </div>
             </div>
 
             <!-- Statistiques personnelles -->
