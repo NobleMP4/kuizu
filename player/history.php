@@ -679,9 +679,64 @@ $score_evolution = array_reverse($evolutionStmt->fetchAll(PDO::FETCH_ASSOC));
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    /* Statistiques compactes sur mobile */
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .stat-card {
+        padding: 0.75rem 0.5rem;
+        min-height: auto;
+    }
+    
+    .stat-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-value {
+        font-size: 1.25rem;
+        margin-bottom: 0.125rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ultra mobile - stats encore plus compacts */
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .stat-card {
+        padding: 0.5rem 0.25rem;
+        text-align: center;
+    }
+    
+    .stat-icon {
+        font-size: 1.25rem;
+        margin-bottom: 0.125rem;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+    
+    .stat-label {
+        font-size: 0.65rem;
+        line-height: 1.1;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     
     .history-meta {
