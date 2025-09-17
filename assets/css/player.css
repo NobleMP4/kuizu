@@ -516,7 +516,7 @@
     
     /* Menu burger */
     .burger-menu {
-        display: inline-block;
+        display: inline-block !important;
         background: rgba(255, 255, 255, 0.2);
         border: none;
         color: var(--white);
@@ -525,6 +525,7 @@
         cursor: pointer;
         font-size: 0.9rem;
         transition: var(--transition);
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Debug border */
     }
     
     .burger-menu:hover {
@@ -546,7 +547,7 @@
     }
     
     .burger-dropdown.show {
-        display: block;
+        display: block !important;
         animation: slideDown 0.3s ease;
     }
     
