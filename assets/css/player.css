@@ -508,7 +508,7 @@
     
     /* Navigation complètement masquée sur mobile */
     .header-nav {
-        display: none;
+        display: none !important;
     }
     
     /* User menu ultra compact */
@@ -553,74 +553,90 @@
         padding: 1rem 0.75rem;
     }
     
-    /* Section bienvenue mobile */
+    /* Section bienvenue mobile - ultra compact */
     .welcome-section {
-        padding: 1.5rem 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .welcome-section h2 {
-        font-size: 1.4rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .welcome-section p {
-        font-size: 0.95rem;
-    }
-    
-    /* Actions rapides mobile */
-    .quick-actions {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .action-card {
-        padding: 1.5rem 1rem;
-    }
-    
-    .action-icon {
-        font-size: 2.5rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .action-card h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .action-card p {
-        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
         margin-bottom: 1rem;
     }
     
-    .action-card .btn {
-        padding: 0.875rem 1.5rem;
-        font-size: 0.95rem;
+    .welcome-section h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
     }
     
-    /* Stats mobile */
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .welcome-section p {
+        font-size: 0.85rem;
+        display: none; /* Masquer sur mobile */
+    }
+    
+    /* Actions rapides mobile - compact */
+    .quick-actions {
+        grid-template-columns: 1fr 1fr;
         gap: 0.75rem;
+        margin-bottom: 1.5rem;
     }
     
-    .stat-item {
+    .action-card {
         padding: 1rem 0.75rem;
     }
     
+    .action-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .action-card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .action-card p {
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+        display: none; /* Masquer la description sur mobile */
+    }
+    
+    .action-card .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Stats mobile - compact */
+    .stats-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .stats-section h3 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .stat-item {
+        padding: 0.75rem 0.5rem;
+    }
+    
     .stat-value {
-        font-size: 1.75rem;
+        font-size: 1.25rem;
     }
     
     .stat-label {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
     
-    /* Quiz grid mobile */
+    /* Quiz grid mobile - compact */
+    .available-quizzes h3 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
     .quiz-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 0.75rem;
     }
     
     .quiz-card {
@@ -628,37 +644,34 @@
     }
     
     .quiz-header {
-        padding: 1rem;
+        padding: 0.75rem;
     }
     
     .quiz-header h4 {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
     }
     
     .quiz-meta {
-        font-size: 0.8rem;
-        gap: 0.75rem;
+        font-size: 0.75rem;
+        gap: 0.5rem;
     }
     
     .quiz-description {
-        padding: 0.75rem 1rem;
-    }
-    
-    .quiz-description p {
-        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+        display: none; /* Masquer la description sur mobile */
     }
     
     .quiz-actions {
         justify-content: stretch;
-        padding: 0.75rem 1rem;
+        padding: 0.5rem 0.75rem;
         gap: 0.5rem;
     }
     
     .quiz-actions .btn {
         flex: 1;
-        font-size: 0.85rem;
-        padding: 0.625rem 0.75rem;
+        font-size: 0.8rem;
+        padding: 0.5rem 0.5rem;
     }
     
     /* Historique mobile */
@@ -735,23 +748,28 @@
         font-size: 0.65rem;
     }
     
+    /* Navigation masquée sur ultra mobile aussi */
+    .header-nav {
+        display: none !important;
+    }
+    
     /* Ultra mobile - interface très simplifiée */
     .player-content {
         padding: 0.75rem 0.5rem;
     }
     
     .welcome-section {
-        padding: 1rem 0.75rem;
-        margin-bottom: 1.5rem;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 1rem;
     }
     
     .welcome-section h2 {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        margin-bottom: 0;
     }
     
     .welcome-section p {
-        font-size: 0.9rem;
+        display: none; /* Complètement masqué sur très petit écran */
     }
     
     /* Stats ultra mobile */

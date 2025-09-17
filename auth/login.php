@@ -125,22 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p>Pas encore de compte ? <a href="register.php<?php echo isset($_GET['quiz']) ? '?quiz=' . urlencode($_GET['quiz']) : ''; ?>">S'inscrire</a></p>
             </div>
 
-            <!-- Comptes de démonstration -->
-            <div class="demo-accounts">
-                <h3>Comptes de démonstration</h3>
-                <div class="demo-account">
-                    <strong>Admin :</strong> admin / password
-                    <small>Gestion complète (quiz + utilisateurs)</small>
-                </div>
-                <div class="demo-account">
-                    <strong>Encadrant :</strong> encadrant / password
-                    <small>Gestion des quiz et sessions uniquement</small>
-                </div>
-                <div class="demo-account">
-                    <strong>Joueur :</strong> Créez un compte ou utilisez un compte existant
-                    <small>Participation aux quiz</small>
-                </div>
-            </div>
         </div>
     </div>
 
