@@ -77,9 +77,6 @@ if (!$is_participant) {
                     <button onclick="showGameInfo()" class="info-btn" title="Informations">
                         ℹ️
                     </button>
-                    <a href="../player/dashboard.php" class="exit-btn" title="Quitter la session">
-                        ✕
-                    </a>
                 </div>
             </div>
         </header>
