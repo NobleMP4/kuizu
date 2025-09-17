@@ -282,10 +282,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <strong>Code de session:</strong>
                             <span class="session-code-large" id="sessionCodeDisplay"></span>
                         </div>
-                        <div class="detail-item">
-                            <strong>URL directe:</strong>
-                            <input type="text" id="sessionUrlInput" readonly onclick="this.select()" class="url-input">
-                        </div>
                     </div>
                 </div>
             </div>
@@ -353,7 +349,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const modal = document.getElementById('qrModal');
             const qrContainer = document.getElementById('qrCodeContainer');
             const codeDisplay = document.getElementById('sessionCodeDisplay');
-            const urlInput = document.getElementById('sessionUrlInput');
             
             // Obtenir l'URL de base dynamiquement
             const baseUrl = window.location.protocol + '//' + window.location.host + window.location.pathname.replace(/\/[^\/]*$/, '');
@@ -362,7 +357,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             qrContainer.innerHTML = `<img src="${qrCodeUrl}" alt="QR Code de la session" style="max-width: 100%; height: auto;">`;
             codeDisplay.textContent = sessionCode;
-            urlInput.value = sessionUrl;
             
             modal.style.display = 'block';
         }

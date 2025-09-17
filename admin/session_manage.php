@@ -203,12 +203,6 @@ $participants = $gameSession->getParticipants($session_id);
                             <strong>Code de session:</strong>
                             <span class="session-code-large"><?php echo $session['session_code']; ?></span>
                         </div>
-                        <div class="detail-item">
-                            <strong>URL directe:</strong>
-                            <input type="text" 
-                                   value="<?php echo $session_url; ?>" 
-                                   readonly onclick="this.select()" class="url-input">
-                        </div>
                     </div>
                 </div>
             </div>

@@ -524,22 +524,6 @@
     margin-top: 0.5rem;
 }
 
-.url-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--gray-300);
-    border-radius: var(--border-radius);
-    font-family: monospace;
-    font-size: 0.875rem;
-    background: var(--white);
-    margin-top: 0.5rem;
-}
-
-.url-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(34, 77, 113, 0.1);
-}
 
 .qr-instructions {
     background: var(--gray-50);
@@ -712,10 +696,6 @@
         padding: 0.5rem 0.75rem;
     }
     
-    .url-input {
-        font-size: 0.75rem;
-        padding: 0.5rem;
-    }
     
     .qr-instructions {
         padding: 0.75rem;
