@@ -275,7 +275,7 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
 
     <!-- Modal détails joueur -->
     <div id="playerModal" class="modal">
-        <div class="modal-content modal-large">
+        <div class="modal-content modal-xl">
             <div class="modal-header">
                 <h3>Détails du joueur</h3>
                 <button onclick="closePlayerModal()" class="modal-close">&times;</button>
@@ -284,6 +284,35 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
                 <div id="playerDetailsContainer">
                     <!-- Les détails seront chargés ici -->
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal changement de mot de passe -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Changer le mot de passe</h3>
+                <button onclick="closePasswordModal()" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <input type="hidden" id="passwordUserId" name="user_id">
+                    <div class="form-group">
+                        <label for="newPassword">Nouveau mot de passe</label>
+                        <input type="password" id="newPassword" name="new_password" class="form-control" 
+                               placeholder="Entrez le nouveau mot de passe" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer le mot de passe</label>
+                        <input type="password" id="confirmPassword" name="confirm_password" class="form-control" 
+                               placeholder="Confirmez le nouveau mot de passe" required minlength="6">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" onclick="closePasswordModal()" class="btn btn-secondary">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -434,12 +463,89 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
                             `).join('')}
                         </div>
                     </div>
+                    
+                    <div class="player-actions">
+                        <h4>Actions disponibles</h4>
+                        <div class="action-buttons">
+                            <button onclick="changePlayerPassword(${player.id}, '${player.first_name} ${player.last_name}')" class="btn-action btn-warning">
+                                <span>🔑</span> Changer le mot de passe
+                            </button>
+                            <button onclick="resetPlayerStats(${player.id})" class="btn-action btn-danger">
+                                <span>🗑️</span> Réinitialiser les stats
+                            </button>
+                            <button onclick="sendPlayerNotification(${player.id})" class="btn-action btn-primary">
+                                <span>📧</span> Envoyer notification
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `;
         }
         
         function closePlayerModal() {
             document.getElementById('playerModal').style.display = 'none';
+        }
+        
+        // Fonctions pour les actions
+        function changePlayerPassword(playerId, playerName) {
+            document.getElementById('passwordUserId').value = playerId;
+            document.querySelector('#passwordModal .modal-header h3').textContent = `Changer le mot de passe - ${playerName}`;
+            document.getElementById('passwordModal').style.display = 'block';
+        }
+        
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('passwordForm').reset();
+        }
+        
+        // Gestion du formulaire de changement de mot de passe
+        document.getElementById('passwordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const newPassword = formData.get('new_password');
+            const confirmPassword = formData.get('confirm_password');
+            
+            if (newPassword !== confirmPassword) {
+                alert('Les mots de passe ne correspondent pas.');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('Le mot de passe doit contenir au moins 6 caractères.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('../api/change_password.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Mot de passe changé avec succès.');
+                    closePasswordModal();
+                } else {
+                    alert('Erreur: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur de connexion.');
+            }
+        });
+        
+        function resetPlayerStats(playerId) {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser les statistiques de ce joueur ? Cette action est irréversible.')) {
+                // TODO: Implémenter la réinitialisation des stats
+                alert('Fonctionnalité à implémenter');
+            }
+        }
+        
+        function sendPlayerNotification(playerId) {
+            // TODO: Implémenter l'envoi de notification
+            alert('Fonctionnalité à implémenter');
         }
     </script>
 </body>

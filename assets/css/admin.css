@@ -408,6 +408,11 @@
     max-width: 800px;
 }
 
+.modal-xl {
+    max-width: 1000px;
+    width: 95%;
+}
+
 @keyframes modalSlideIn {
     from {
         opacity: 0;
@@ -1330,6 +1335,107 @@
 .activity-time {
     color: var(--gray-500);
     font-size: 0.75rem;
+}
+
+/* Form Styles for Modals */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--gray-700);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(34, 77, 113, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-200);
+}
+
+/* Player Details Modal Layout */
+.player-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.player-details .player-profile {
+    grid-column: 1 / -1;
+}
+
+.player-actions {
+    grid-column: 1 / -1;
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.player-actions h4 {
+    margin: 0 0 1rem 0;
+    color: var(--gray-800);
+    font-size: 1.1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-action.btn-warning {
+    background: var(--warning-color);
+    color: var(--white);
+}
+
+.btn-action.btn-warning:hover {
+    background: #ea580c;
+    transform: translateY(-1px);
+}
+
+.btn-action.btn-danger {
+    background: var(--error-color);
+    color: var(--white);
+}
+
+.btn-action.btn-danger:hover {
+    background: #c53030;
+    transform: translateY(-1px);
 }
 
 /* Modal et QR Code responsive mobile */
