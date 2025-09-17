@@ -706,67 +706,68 @@ $score_evolution = array_reverse($evolutionStmt->fetchAll(PDO::FETCH_ASSOC));
         line-height: 1.2;
     }
     
-    /* Historique détaillé compact sur mobile */
+    /* Historique détaillé très compact sur mobile */
     .history-item {
-        padding: 1rem 0.75rem;
-        margin-bottom: 0.75rem;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
     }
     
     .history-header h4 {
-        font-size: 1rem;
-        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+        margin-bottom: 0.125rem;
+        line-height: 1.2;
     }
     
     .history-meta {
         flex-wrap: wrap;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        margin-bottom: 0.75rem;
+        gap: 0.375rem;
+        font-size: 0.7rem;
+        margin-bottom: 0.5rem;
     }
     
     .history-score {
-        min-width: 60px;
+        min-width: 50px;
     }
     
     .score-value {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
     }
     
     .score-label {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
     }
     
     .detail-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
     }
     
     .detail-item {
-        padding: 0.375rem 0.5rem;
-        font-size: 0.75rem;
+        padding: 0.25rem 0.375rem;
+        font-size: 0.7rem;
+        background: rgba(0,0,0,0.02);
+        border-radius: 4px;
     }
     
     .detail-icon {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
+        margin-right: 0.25rem;
     }
     
     .quiz-description {
-        padding: 0.5rem 0.75rem;
-        margin-top: 0.5rem;
-    }
-    
-    .quiz-description p {
-        font-size: 0.8rem;
-        line-height: 1.3;
+        padding: 0.375rem 0.5rem;
+        margin-top: 0.375rem;
+        display: none; /* Masquer sur mobile */
     }
     
     .performance-indicator {
-        margin-top: 0.5rem;
+        margin-top: 0.375rem;
     }
     
     .performance {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
+        padding: 0.125rem 0.375rem;
+        font-size: 0.7rem;
+        border-radius: 12px;
     }
 }
 
@@ -804,65 +805,86 @@ $score_evolution = array_reverse($evolutionStmt->fetchAll(PDO::FETCH_ASSOC));
     
     /* Historique ultra compact sur ultra mobile */
     .history-item {
-        padding: 0.75rem 0.5rem;
-        margin-bottom: 0.5rem;
+        padding: 0.375rem;
+        margin-bottom: 0.375rem;
+        border-radius: 6px;
+    }
+    
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.25rem;
     }
     
     .history-header h4 {
-        font-size: 0.9rem;
-        margin-bottom: 0.125rem;
+        font-size: 0.8rem;
+        margin-bottom: 0;
+        line-height: 1.1;
+        flex: 1;
     }
     
     .history-meta {
-        flex-direction: column;
-        gap: 0.375rem;
-        font-size: 0.7rem;
-        margin-bottom: 0.5rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        font-size: 0.65rem;
+        margin-bottom: 0.375rem;
     }
     
     .history-score {
         align-self: flex-start;
-        min-width: 50px;
+        min-width: 40px;
+        text-align: center;
     }
     
     .score-value {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
+        font-weight: 700;
     }
     
     .score-label {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
     }
     
     .detail-grid {
-        grid-template-columns: 1fr;
-        gap: 0.25rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.125rem;
     }
     
     .detail-item {
-        padding: 0.25rem 0.375rem;
-        font-size: 0.7rem;
-        border-radius: 4px;
+        padding: 0.125rem 0.25rem;
+        font-size: 0.65rem;
+        background: rgba(0,0,0,0.03);
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
     }
     
     .detail-icon {
-        font-size: 0.8rem;
-        margin-right: 0.25rem;
+        font-size: 0.7rem;
+        margin-right: 0.125rem;
+    }
+    
+    .detail-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .quiz-description {
-        padding: 0.375rem 0.5rem;
-        margin-top: 0.375rem;
-        display: none; /* Masquer sur très petit écran */
+        display: none; /* Complètement masqué sur ultra mobile */
     }
     
     .performance-indicator {
-        margin-top: 0.375rem;
+        margin-top: 0.25rem;
     }
     
     .performance {
-        padding: 0.125rem 0.375rem;
-        font-size: 0.7rem;
-        border-radius: 12px;
+        padding: 0.0625rem 0.25rem;
+        font-size: 0.65rem;
+        border-radius: 8px;
+        display: inline-block;
     }
 }
 </style>
