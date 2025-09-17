@@ -63,20 +63,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         Mes Quiz
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="sessions.php">
-                        <span class="menu-icon">🎮</span>
-                        Sessions de jeu
-                    </a>
-                </li>
-                <?php if (User::canManageUsers()): ?>
                     <li class="menu-item">
-                        <a href="users.php">
-                            <span class="menu-icon">👥</span>
-                            Utilisateurs
+                        <a href="sessions.php">
+                            <span class="menu-icon">🎮</span>
+                            Sessions de jeu
                         </a>
                     </li>
-                <?php endif; ?>
+                    <li class="menu-item">
+                        <a href="players.php">
+                            <span class="menu-icon">👥</span>
+                            Joueurs
+                        </a>
+                    </li>
+                    <?php if (User::canManageUsers()): ?>
+                        <li class="menu-item">
+                            <a href="users.php">
+                                <span class="menu-icon">⚙️</span>
+                                Utilisateurs
+                            </a>
+                        </li>
+                    <?php endif; ?>
             </ul>
             
             <div class="sidebar-footer">

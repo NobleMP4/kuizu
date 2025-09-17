@@ -49,10 +49,16 @@ $quizzes = $quiz->getAll($current_user['id']);
                         Sessions de jeu
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="players.php">
+                        <span class="menu-icon">👥</span>
+                        Joueurs
+                    </a>
+                </li>
                 <?php if (User::canManageUsers()): ?>
                     <li class="menu-item">
                         <a href="users.php">
-                            <span class="menu-icon">👥</span>
+                            <span class="menu-icon">⚙️</span>
                             Utilisateurs
                         </a>
                     </li>
