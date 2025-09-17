@@ -98,6 +98,14 @@ $score_evolution = array_reverse($evolutionStmt->fetchAll(PDO::FETCH_ASSOC));
                     <div class="user-info">
                         <span>👤 <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
                     </div>
+                    <button onclick="toggleBurgerMenu()" class="burger-menu" id="burgerBtn">
+                        ☰
+                    </button>
+                    <div class="burger-dropdown" id="burgerDropdown">
+                        <a href="dashboard.php">🏠 Tableau de bord</a>
+                        <a href="join_session.php">🎮 Rejoindre une session</a>
+                        <a href="history.php" class="active">📊 Mon historique</a>
+                    </div>
                     <a href="../auth/logout.php" class="btn btn-outline-primary btn-sm">
                         Déconnexion
                     </a>
@@ -169,41 +177,6 @@ $score_evolution = array_reverse($evolutionStmt->fetchAll(PDO::FETCH_ASSOC));
                             <div class="stat-content">
                                 <div class="stat-value"><?php echo $stats['total_questions_answered']; ?></div>
                                 <div class="stat-label">Questions répondues</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Graphiques -->
-                <div class="charts-section">
-                    <div class="charts-grid">
-                        <!-- Évolution des scores -->
-                        <div class="chart-card">
-                            <h3>Évolution de vos scores</h3>
-                            <div class="chart-container">
-                                <canvas id="scoreChart"></canvas>
-                            </div>
-                        </div>
-                        
-                        <!-- Quiz les plus joués -->
-                        <div class="chart-card">
-                            <h3>Vos quiz favoris</h3>
-                            <div class="popular-quizzes">
-                                <?php foreach ($popular_quizzes as $index => $quiz): ?>
-                                    <div class="popular-quiz-item">
-                                        <div class="quiz-rank"><?php echo $index + 1; ?></div>
-                                        <div class="quiz-info">
-                                            <div class="quiz-name"><?php echo htmlspecialchars($quiz['title']); ?></div>
-                                            <div class="quiz-stats">
-                                                <span><?php echo $quiz['play_count']; ?> partie(s)</span>
-                                                <span>•</span>
-                                                <span><?php echo round($quiz['avg_score'], 0); ?> pts moy.</span>
-                                                <span>•</span>
-                                                <span><?php echo round($quiz['avg_success_rate'], 1); ?>% réussite</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>

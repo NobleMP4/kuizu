@@ -56,9 +56,38 @@ function initMobileHeader() {
                 header.classList.add('mobile-optimized');
             } else {
                 header.classList.remove('mobile-optimized');
+                // Fermer le menu burger si on passe en desktop
+                const dropdown = document.getElementById('burgerDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
             }
         }
     });
+    
+    // Fermer le menu burger si on clique ailleurs
+    document.addEventListener('click', function(event) {
+        const burgerBtn = document.getElementById('burgerBtn');
+        const dropdown = document.getElementById('burgerDropdown');
+        
+        if (burgerBtn && dropdown && !burgerBtn.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+            burgerBtn.textContent = '☰';
+        }
+    });
+}
+
+/**
+ * Toggle du menu burger mobile
+ */
+function toggleBurgerMenu() {
+    const dropdown = document.getElementById('burgerDropdown');
+    const burgerBtn = document.getElementById('burgerBtn');
+    
+    if (dropdown && burgerBtn) {
+        dropdown.classList.toggle('show');
+        burgerBtn.textContent = dropdown.classList.contains('show') ? '✕' : '☰';
+    }
 }
 
 /**

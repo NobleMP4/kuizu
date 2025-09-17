@@ -73,6 +73,14 @@ $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
                     <div class="user-info">
                         <span>👤 <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
                     </div>
+                    <button onclick="toggleBurgerMenu()" class="burger-menu" id="burgerBtn">
+                        ☰
+                    </button>
+                    <div class="burger-dropdown" id="burgerDropdown">
+                        <a href="dashboard.php" class="active">🏠 Tableau de bord</a>
+                        <a href="join_session.php">🎮 Rejoindre une session</a>
+                        <a href="history.php">📊 Mon historique</a>
+                    </div>
                     <a href="../auth/logout.php" class="btn btn-outline-primary btn-sm">
                         Déconnexion
                     </a>
