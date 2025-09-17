@@ -162,10 +162,10 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
             </div>
 
             <!-- Liste des joueurs -->
-            <div class="players-section">
-                <div class="section-header">
-                    <h2>Liste des Joueurs</h2>
-                    <div class="section-actions">
+            <div class="players-container">
+                <div class="players-header">
+                    <h2>Liste des Joueurs (<?php echo count($players); ?>)</h2>
+                    <div class="filter-controls">
                         <input type="text" id="searchPlayer" placeholder="Rechercher un joueur..." class="search-input">
                         <select id="sortPlayers" class="form-select">
                             <option value="games">Trier par parties</option>
@@ -184,64 +184,74 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
                         <p>Il n'y a actuellement aucun joueur inscrit sur la plateforme.</p>
                     </div>
                 <?php else: ?>
-                    <div class="players-grid" id="playersGrid">
-                        <?php foreach ($players as $player): ?>
-                            <div class="player-card" onclick="showPlayerDetails(<?php echo $player['id']; ?>)" data-player-id="<?php echo $player['id']; ?>">
-                                <div class="player-header">
-                                    <div class="player-avatar">
-                                        <?php echo strtoupper(substr($player['first_name'], 0, 1) . substr($player['last_name'], 0, 1)); ?>
-                                    </div>
-                                    <div class="player-info">
-                                        <h4><?php echo htmlspecialchars($player['first_name'] . ' ' . $player['last_name']); ?></h4>
-                                        <p class="player-username">@<?php echo htmlspecialchars($player['username']); ?></p>
-                                    </div>
-                                    <div class="player-status">
-                                        <?php if ($player['total_games'] > 0): ?>
-                                            <span class="status-badge active">Actif</span>
-                                        <?php else: ?>
-                                            <span class="status-badge inactive">Inactif</span>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                                
-                                <div class="player-stats">
-                                    <div class="stat-mini">
-                                        <span class="stat-icon">🎮</span>
-                                        <div class="stat-info">
-                                            <div class="stat-value"><?php echo $player['total_games']; ?></div>
-                                            <div class="stat-label">Parties</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="stat-mini">
-                                        <span class="stat-icon">🏆</span>
-                                        <div class="stat-info">
-                                            <div class="stat-value"><?php echo $player['best_score'] ? round($player['best_score'], 0) : '0'; ?></div>
-                                            <div class="stat-label">Meilleur</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="stat-mini">
-                                        <span class="stat-icon">📊</span>
-                                        <div class="stat-info">
-                                            <div class="stat-value"><?php echo $player['avg_success_rate'] ? round($player['avg_success_rate'], 0) : '0'; ?>%</div>
-                                            <div class="stat-label">Réussite</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="player-footer">
-                                    <span class="join-date">
-                                        Inscrit le <?php echo date('d/m/Y', strtotime($player['created_at'])); ?>
-                                    </span>
-                                    <?php if ($player['last_game_date']): ?>
-                                        <span class="last-activity">
-                                            Dernière partie: <?php echo date('d/m/Y', strtotime($player['last_game_date'])); ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+                    <div class="players-table-container">
+                        <table class="players-table">
+                            <thead>
+                                <tr>
+                                    <th>Joueur</th>
+                                    <th>Inscription</th>
+                                    <th>Statistiques</th>
+                                    <th>Dernière activité</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="playersTableBody">
+                                <?php foreach ($players as $player): ?>
+                                    <tr class="player-row" data-player-id="<?php echo $player['id']; ?>" 
+                                        onclick="showPlayerDetails(<?php echo $player['id']; ?>)" style="cursor: pointer;">
+                                        <td class="player-info-cell">
+                                            <div class="player-avatar-table">
+                                                <?php echo strtoupper(substr($player['first_name'], 0, 1) . substr($player['last_name'], 0, 1)); ?>
+                                            </div>
+                                            <div class="player-details-table">
+                                                <h4><?php echo htmlspecialchars($player['first_name'] . ' ' . $player['last_name']); ?></h4>
+                                                <p>@<?php echo htmlspecialchars($player['username']); ?> • <?php echo htmlspecialchars($player['email']); ?></p>
+                                            </div>
+                                        </td>
+                                        <td class="date-cell">
+                                            <div class="date-info">
+                                                <div class="date-primary"><?php echo date('d/m/Y', strtotime($player['created_at'])); ?></div>
+                                                <div class="date-secondary"><?php echo date('H:i', strtotime($player['created_at'])); ?></div>
+                                            </div>
+                                        </td>
+                                        <td class="stats-cell">
+                                            <?php if ($player['total_games'] > 0): ?>
+                                                <div class="stat-item">
+                                                    <span class="stat-label">Parties:</span>
+                                                    <span class="stat-value"><?php echo $player['total_games']; ?></span>
+                                                </div>
+                                                <div class="stat-item">
+                                                    <span class="stat-label">Meilleur:</span>
+                                                    <span class="stat-value"><?php echo round($player['best_score'], 0); ?></span>
+                                                </div>
+                                                <div class="stat-item">
+                                                    <span class="stat-label">Réussite:</span>
+                                                    <span class="stat-value"><?php echo round($player['avg_success_rate'], 1); ?>%</span>
+                                                </div>
+                                            <?php else: ?>
+                                                <span class="activity-never">Aucune activité</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="activity-cell">
+                                            <?php if ($player['last_game_date']): ?>
+                                                <?php echo date('d/m/Y', strtotime($player['last_game_date'])); ?>
+                                                <br>
+                                                <small><?php echo date('H:i', strtotime($player['last_game_date'])); ?></small>
+                                            <?php else: ?>
+                                                <span class="activity-never">Jamais joué</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="actions-cell">
+                                            <?php if ($player['total_games'] > 0): ?>
+                                                <span class="status-badge active">Actif</span>
+                                            <?php else: ?>
+                                                <span class="status-badge inactive">Inactif</span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 <?php endif; ?>
             </div>
@@ -281,24 +291,24 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
         });
         
         function filterPlayers(searchTerm) {
-            const playerCards = document.querySelectorAll('.player-card');
-            playerCards.forEach(card => {
-                const playerName = card.querySelector('h4').textContent.toLowerCase();
-                const playerUsername = card.querySelector('.player-username').textContent.toLowerCase();
+            const playerRows = document.querySelectorAll('.player-row');
+            playerRows.forEach(row => {
+                const playerName = row.querySelector('h4').textContent.toLowerCase();
+                const playerEmail = row.querySelector('p').textContent.toLowerCase();
                 
-                if (playerName.includes(searchTerm) || playerUsername.includes(searchTerm)) {
-                    card.style.display = 'block';
+                if (playerName.includes(searchTerm) || playerEmail.includes(searchTerm)) {
+                    row.style.display = 'table-row';
                 } else {
-                    card.style.display = 'none';
+                    row.style.display = 'none';
                 }
             });
         }
         
         function sortPlayers(sortBy) {
-            const playersGrid = document.getElementById('playersGrid');
-            const playerCards = Array.from(playersGrid.children);
+            const tbody = document.getElementById('playersTableBody');
+            const playerRows = Array.from(tbody.children);
             
-            playerCards.sort((a, b) => {
+            playerRows.sort((a, b) => {
                 const playerA = allPlayers.find(p => p.id == a.dataset.playerId);
                 const playerB = allPlayers.find(p => p.id == b.dataset.playerId);
                 
@@ -319,7 +329,7 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
             });
             
             // Réorganiser les éléments
-            playerCards.forEach(card => playersGrid.appendChild(card));
+            playerRows.forEach(row => tbody.appendChild(row));
         }
         
         async function showPlayerDetails(playerId) {
