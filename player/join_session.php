@@ -74,13 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="user-info">
                         <span>👤 <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
                     </div>
-                    <button onclick="toggleBurgerMenu()" class="burger-menu" id="burgerBtn">
+                    <button onclick="toggleBurgerMenu()" class="burger-menu" id="burgerBtn" 
+                            style="display: inline-block; background: rgba(255,255,255,0.2); border: none; color: white; padding: 0.5rem; border-radius: 6px; cursor: pointer; font-size: 1rem; margin-left: 0.5rem;">
                         ☰
                     </button>
-                    <div class="burger-dropdown" id="burgerDropdown">
-                        <a href="dashboard.php">🏠 Tableau de bord</a>
-                        <a href="join_session.php" class="active">🎮 Rejoindre une session</a>
-                        <a href="history.php">📊 Mon historique</a>
+                    <div class="burger-dropdown" id="burgerDropdown" 
+                         style="position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 200px; z-index: 1000; display: none; margin-top: 0.5rem;">
+                        <a href="dashboard.php" style="display: block; padding: 0.75rem 1rem; color: #374151; text-decoration: none; border-bottom: 1px solid #e5e7eb; transition: background 0.2s;">🏠 Tableau de bord</a>
+                        <a href="join_session.php" class="active" style="display: block; padding: 0.75rem 1rem; color: white; background: #224d71; text-decoration: none; border-bottom: 1px solid #e5e7eb;">🎮 Rejoindre une session</a>
+                        <a href="history.php" style="display: block; padding: 0.75rem 1rem; color: #374151; text-decoration: none;">📊 Mon historique</a>
                     </div>
                     <a href="../auth/logout.php" class="btn btn-outline-primary btn-sm">
                         Déconnexion
@@ -590,12 +592,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
 // Fonction pour toggle le menu burger
 function toggleBurgerMenu() {
+    console.log('toggleBurgerMenu appelée');
     const dropdown = document.getElementById('burgerDropdown');
     const burgerBtn = document.getElementById('burgerBtn');
     
     if (dropdown && burgerBtn) {
-        dropdown.classList.toggle('show');
-        burgerBtn.textContent = dropdown.classList.contains('show') ? '✕' : '☰';
+        const isShown = dropdown.style.display === 'block';
+        dropdown.style.display = isShown ? 'none' : 'block';
+        burgerBtn.textContent = isShown ? '☰' : '✕';
+        console.log('Menu toggled, display:', dropdown.style.display);
+    } else {
+        console.error('Éléments non trouvés');
     }
 }
 
@@ -607,8 +614,9 @@ document.addEventListener('click', function(event) {
     if (burgerBtn && dropdown && 
         !burgerBtn.contains(event.target) && 
         !dropdown.contains(event.target)) {
-        dropdown.classList.remove('show');
+        dropdown.style.display = 'none';
         burgerBtn.textContent = '☰';
+        console.log('Menu fermé par clic extérieur');
     }
 });
 </script>
