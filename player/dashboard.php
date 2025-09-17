@@ -222,5 +222,30 @@ $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
     </div>
 
     <script src="../assets/js/player.js"></script>
+    <script>
+        // Fonction pour toggle le menu burger
+        function toggleBurgerMenu() {
+            const dropdown = document.getElementById('burgerDropdown');
+            const burgerBtn = document.getElementById('burgerBtn');
+            
+            if (dropdown && burgerBtn) {
+                dropdown.classList.toggle('show');
+                burgerBtn.textContent = dropdown.classList.contains('show') ? '✕' : '☰';
+            }
+        }
+        
+        // Fermer le menu si on clique ailleurs
+        document.addEventListener('click', function(event) {
+            const burgerBtn = document.getElementById('burgerBtn');
+            const dropdown = document.getElementById('burgerDropdown');
+            
+            if (burgerBtn && dropdown && 
+                !burgerBtn.contains(event.target) && 
+                !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+                burgerBtn.textContent = '☰';
+            }
+        });
+    </script>
 </body>
 </html>

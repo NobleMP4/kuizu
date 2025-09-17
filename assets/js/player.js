@@ -15,9 +15,6 @@ function initPlayerInterface() {
     // Initialiser le header mobile
     initMobileHeader();
     
-    // Initialiser le burger menu
-    initBurgerMenu();
-    
     // Animation des cartes au chargement
     animateCards();
     
@@ -91,36 +88,6 @@ function toggleBurgerMenu() {
         dropdown.classList.toggle('show');
         burgerBtn.textContent = dropdown.classList.contains('show') ? '✕' : '☰';
     }
-}
-
-/**
- * Initialiser les event listeners pour le burger menu
- */
-function initBurgerMenu() {
-    // Fermer le menu si on clique ailleurs
-    document.addEventListener('click', function(event) {
-        const burgerBtn = document.getElementById('burgerBtn');
-        const dropdown = document.getElementById('burgerDropdown');
-        
-        if (burgerBtn && dropdown && 
-            !burgerBtn.contains(event.target) && 
-            !dropdown.contains(event.target)) {
-            dropdown.classList.remove('show');
-            burgerBtn.textContent = '☰';
-        }
-    });
-    
-    // Fermer le menu sur redimensionnement vers desktop
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            const dropdown = document.getElementById('burgerDropdown');
-            const burgerBtn = document.getElementById('burgerBtn');
-            if (dropdown && burgerBtn) {
-                dropdown.classList.remove('show');
-                burgerBtn.textContent = '☰';
-            }
-        }
-    });
 }
 
 /**
