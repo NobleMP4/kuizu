@@ -56,8 +56,8 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joueurs - Administration Kuizu</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/admin.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div class="admin-layout">
@@ -162,12 +162,14 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
             </div>
 
             <!-- Liste des joueurs -->
-            <div class="players-container">
-                <div class="players-header">
-                    <h2>Liste des Joueurs (<?php echo count($players); ?>)</h2>
-                    <div class="filter-controls">
-                        <input type="text" id="searchPlayer" placeholder="Rechercher un joueur..." class="search-input">
-                        <select id="sortPlayers" class="form-select">
+            <div class="players-container" style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem;">
+                <div class="players-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                    <h2 style="margin: 0; color: #374151; font-size: 1.5rem;">Liste des Joueurs (<?php echo count($players); ?>)</h2>
+                    <div class="filter-controls" style="display: flex; gap: 1rem; align-items: center;">
+                        <input type="text" id="searchPlayer" placeholder="Rechercher un joueur..." 
+                               style="padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.875rem; min-width: 250px;">
+                        <select id="sortPlayers" 
+                                style="padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.875rem; background: white; cursor: pointer;">
                             <option value="games">Trier par parties</option>
                             <option value="score">Trier par score</option>
                             <option value="success">Trier par réussite</option>
@@ -184,68 +186,81 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
                         <p>Il n'y a actuellement aucun joueur inscrit sur la plateforme.</p>
                     </div>
                 <?php else: ?>
-                    <div class="players-table-container">
-                        <table class="players-table">
+                    <div class="players-table-container" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+                        <table class="players-table" style="width: 100%; border-collapse: collapse; background: white;">
                             <thead>
                                 <tr>
-                                    <th>Joueur</th>
-                                    <th>Inscription</th>
-                                    <th>Statistiques</th>
-                                    <th>Dernière activité</th>
-                                    <th>Actions</th>
+                                    <th style="background: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6; font-weight: 600;">Joueur</th>
+                                    <th style="background: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6; font-weight: 600;">Inscription</th>
+                                    <th style="background: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6; font-weight: 600;">Statistiques</th>
+                                    <th style="background: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6; font-weight: 600;">Dernière activité</th>
+                                    <th style="background: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6; font-weight: 600;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="playersTableBody">
                                 <?php foreach ($players as $player): ?>
                                     <tr class="player-row" data-player-id="<?php echo $player['id']; ?>" 
                                         onclick="showPlayerDetails(<?php echo $player['id']; ?>)" style="cursor: pointer;">
-                                        <td class="player-info-cell">
-                                            <div class="player-avatar-table">
-                                                <?php echo strtoupper(substr($player['first_name'], 0, 1) . substr($player['last_name'], 0, 1)); ?>
-                                            </div>
-                                            <div class="player-details-table">
-                                                <h4><?php echo htmlspecialchars($player['first_name'] . ' ' . $player['last_name']); ?></h4>
-                                                <p>@<?php echo htmlspecialchars($player['username']); ?> • <?php echo htmlspecialchars($player['email']); ?></p>
+                                        <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
+                                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #224d71, #f46e46); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">
+                                                    <?php echo strtoupper(substr($player['first_name'], 0, 1) . substr($player['last_name'], 0, 1)); ?>
+                                                </div>
+                                                <div>
+                                                    <h4 style="margin: 0 0 0.25rem 0; color: #374151; font-size: 1rem; font-weight: 600;">
+                                                        <?php echo htmlspecialchars($player['first_name'] . ' ' . $player['last_name']); ?>
+                                                    </h4>
+                                                    <p style="margin: 0; color: #6b7280; font-size: 0.875rem;">
+                                                        @<?php echo htmlspecialchars($player['username']); ?> • <?php echo htmlspecialchars($player['email']); ?>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td class="date-cell">
-                                            <div class="date-info">
-                                                <div class="date-primary"><?php echo date('d/m/Y', strtotime($player['created_at'])); ?></div>
-                                                <div class="date-secondary"><?php echo date('H:i', strtotime($player['created_at'])); ?></div>
+                                        <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
+                                            <div style="font-weight: 600; color: #374151; margin-bottom: 0.25rem;">
+                                                <?php echo date('d/m/Y', strtotime($player['created_at'])); ?>
+                                            </div>
+                                            <div style="color: #6b7280; font-size: 0.75rem;">
+                                                <?php echo date('H:i', strtotime($player['created_at'])); ?>
                                             </div>
                                         </td>
-                                        <td class="stats-cell">
+                                        <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
                                             <?php if ($player['total_games'] > 0): ?>
-                                                <div class="stat-item">
-                                                    <span class="stat-label">Parties:</span>
-                                                    <span class="stat-value"><?php echo $player['total_games']; ?></span>
-                                                </div>
-                                                <div class="stat-item">
-                                                    <span class="stat-label">Meilleur:</span>
-                                                    <span class="stat-value"><?php echo round($player['best_score'], 0); ?></span>
-                                                </div>
-                                                <div class="stat-item">
-                                                    <span class="stat-label">Réussite:</span>
-                                                    <span class="stat-value"><?php echo round($player['avg_success_rate'], 1); ?>%</span>
+                                                <div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.875rem;">
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <span style="color: #6b7280;">Parties:</span>
+                                                        <span style="font-weight: 600; color: #374151;"><?php echo $player['total_games']; ?></span>
+                                                    </div>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <span style="color: #6b7280;">Meilleur:</span>
+                                                        <span style="font-weight: 600; color: #374151;"><?php echo round($player['best_score'], 0); ?></span>
+                                                    </div>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <span style="color: #6b7280;">Réussite:</span>
+                                                        <span style="font-weight: 600; color: #374151;"><?php echo round($player['avg_success_rate'], 1); ?>%</span>
+                                                    </div>
                                                 </div>
                                             <?php else: ?>
-                                                <span class="activity-never">Aucune activité</span>
+                                                <span style="color: #9ca3af; font-style: italic;">Aucune activité</span>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="activity-cell">
+                                        <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
                                             <?php if ($player['last_game_date']): ?>
-                                                <?php echo date('d/m/Y', strtotime($player['last_game_date'])); ?>
-                                                <br>
-                                                <small><?php echo date('H:i', strtotime($player['last_game_date'])); ?></small>
+                                                <div style="font-weight: 600; color: #374151; margin-bottom: 0.25rem;">
+                                                    <?php echo date('d/m/Y', strtotime($player['last_game_date'])); ?>
+                                                </div>
+                                                <div style="color: #6b7280; font-size: 0.75rem;">
+                                                    <?php echo date('H:i', strtotime($player['last_game_date'])); ?>
+                                                </div>
                                             <?php else: ?>
-                                                <span class="activity-never">Jamais joué</span>
+                                                <span style="color: #9ca3af; font-style: italic;">Jamais joué</span>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="actions-cell">
+                                        <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
                                             <?php if ($player['total_games'] > 0): ?>
-                                                <span class="status-badge active">Actif</span>
+                                                <span style="background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">Actif</span>
                                             <?php else: ?>
-                                                <span class="status-badge inactive">Inactif</span>
+                                                <span style="background: #e5e7eb; color: #6b7280; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">Inactif</span>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
