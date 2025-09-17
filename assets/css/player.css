@@ -33,15 +33,17 @@
 }
 
 .logo img {
-    /* Fond blanc comme l'admin */
+    /* Fond blanc comme l'admin - taille augmentée */
     background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    padding: 8px;
+    border-radius: 10px;
+    padding: 10px;
+    width: 60px;
+    height: 60px;
 }
 
 .logo-text h1 {
     color: var(--secondary-color);
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     margin: 0;
     font-weight: 700;
 }
@@ -599,15 +601,15 @@
     }
     
     .logo img {
-        width: 25px;
-        height: 25px;
+        width: 35px;
+        height: 35px;
         background: rgba(255, 255, 255, 0.9);
-        border-radius: 6px;
-        padding: 4px;
+        border-radius: 8px;
+        padding: 6px;
     }
     
     .logo-text h1 {
-        font-size: 0.9rem;
+        font-size: 1.1rem;
         margin-bottom: 0;
     }
     
@@ -977,15 +979,15 @@
     }
     
     .logo img {
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
         background: rgba(255, 255, 255, 0.9);
-        border-radius: 5px;
-        padding: 3px;
+        border-radius: 6px;
+        padding: 5px;
     }
     
     .logo-text h1 {
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
     
     /* User info masqué sur ultra mobile */

@@ -107,15 +107,6 @@ $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
                     </div>
                     <a href="join_session.php" class="btn btn-primary">Rejoindre</a>
                 </div>
-                
-                <div class="secondary-actions">
-                    <button onclick="startQRScanner()" class="btn btn-secondary btn-icon">
-                        <span>📱</span> Scanner QR
-                    </button>
-                    <a href="history.php" class="btn btn-outline-primary btn-icon">
-                        <span>📊</span> Historique
-                    </a>
-                </div>
             </div>
 
             <!-- Statistiques compactes -->
@@ -147,43 +138,6 @@ $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
                     </div>
                 </div>
             <?php endif; ?>
-
-            <!-- Quiz disponibles -->
-            <div class="available-quizzes">
-                <h3>Quiz disponibles</h3>
-                <?php if (empty($available_quizzes)): ?>
-                    <div class="empty-state">
-                        <div class="empty-icon">❓</div>
-                        <h4>Aucun quiz disponible</h4>
-                        <p>Il n'y a actuellement aucun quiz ouvert. Reviens plus tard ou demande à ton instructeur de débloquer des quiz.</p>
-                    </div>
-                <?php else: ?>
-                    <div class="quiz-grid">
-                        <?php foreach ($available_quizzes as $quiz_item): ?>
-                            <div class="quiz-card">
-                                <div class="quiz-header">
-                                    <h4><?php echo htmlspecialchars($quiz_item['title']); ?></h4>
-                                    <div class="quiz-meta">
-                                        <span>📝 <?php echo $quiz_item['question_count']; ?> questions</span>
-                                        <span>👨‍🏫 <?php echo htmlspecialchars($quiz_item['creator_name']); ?></span>
-                                    </div>
-                                </div>
-                                <div class="quiz-description">
-                                    <p><?php echo htmlspecialchars(substr($quiz_item['description'], 0, 120) . (strlen($quiz_item['description']) > 120 ? '...' : '')); ?></p>
-                                </div>
-                                <div class="quiz-actions">
-                                    <a href="quiz_preview.php?id=<?php echo $quiz_item['id']; ?>" class="btn btn-outline-primary btn-sm">
-                                        👁️ Aperçu
-                                    </a>
-                                    <button onclick="joinQuizSession(<?php echo $quiz_item['id']; ?>)" class="btn btn-primary btn-sm">
-                                        🎮 Jouer
-                                    </button>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
 
             <!-- Historique récent -->
             <?php if (!empty($game_history)): ?>
