@@ -62,17 +62,16 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
-        <aside class="admin-sidebar">
+        <nav class="admin-sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <img src="../assets/images/logo.png" alt="Kuizu" width="40" height="40">
+                    <img src="../assets/images/logo.png" alt="Kuizu" width="60" height="60">
                     <h1>Kuizu</h1>
                 </div>
                 <p>Administration</p>
             </div>
             
-            <nav class="sidebar-nav">
-                <ul class="nav-menu">
+            <ul class="sidebar-menu">
                     <li class="menu-item">
                         <a href="dashboard.php">
                             <span class="menu-icon">📊</span>
@@ -81,14 +80,14 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
                     </li>
                     <li class="menu-item">
                         <a href="quizzes.php">
-                            <span class="menu-icon">📝</span>
-                            Quiz
+                            <span class="menu-icon">❓</span>
+                            Mes Quiz
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="sessions.php">
                             <span class="menu-icon">🎮</span>
-                            Sessions
+                            Sessions de jeu
                         </a>
                     </li>
                     <li class="menu-item active">
@@ -105,22 +104,18 @@ $globalStats = $globalStatsStmt->fetch(PDO::FETCH_ASSOC);
                             </a>
                         </li>
                     <?php endif; ?>
-                </ul>
-            </nav>
+            </ul>
             
             <div class="sidebar-footer">
                 <div class="user-info">
-                    <div class="user-avatar">👤</div>
-                    <div class="user-details">
-                        <span class="user-name"><?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
-                        <small><?php echo $current_user['role'] === 'admin' ? 'Administrateur' : 'Encadrant'; ?></small>
-                    </div>
+                    <strong><?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></strong>
+                    <small><?php echo $current_user['role'] === 'admin' ? 'Administrateur' : 'Encadrant'; ?></small>
                 </div>
                 <a href="../auth/logout.php" class="btn btn-outline-light btn-sm">
                     Déconnexion
                 </a>
             </div>
-        </aside>
+        </nav>
 
         <!-- Contenu principal -->
         <main class="admin-content">
