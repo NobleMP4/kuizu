@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Auto-masquage des alertes
     initAlertAutoHide();
+    
+    // Gestion des modales
+    initModalHandlers();
 });
 
 /**
@@ -388,3 +391,27 @@ document.addEventListener('keydown', function(event) {
         });
     }
 });
+
+/**
+ * Initialiser la gestion des modales
+ */
+function initModalHandlers() {
+    // Fermer les modales en cliquant sur l'arrière-plan
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+            e.target.style.display = 'none';
+        }
+    });
+    
+    // Fermer les modales avec la touche Échap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (modal.style.display === 'block') {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    });
+}
