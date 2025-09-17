@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <strong><?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></strong>
                     <small><?php echo $current_user['role'] === 'admin' ? 'Administrateur' : 'Encadrant'; ?></small>
                 </div>
-                <a href="../auth/logout.php" class="btn btn-outline-primary btn-sm">
+                <a href="../auth/logout.php" class="btn btn-outline-light btn-sm">
                     Déconnexion
                 </a>
             </div>
@@ -247,29 +247,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php $stats = $user_stats[$user_item['id']]; ?>
                                 <tr class="user-row" data-role="<?php echo $user_item['role']; ?>" 
                                     data-activity="<?php echo $stats['total_games'] > 0 ? 'active' : 'inactive'; ?>">
-                                    <td class="user-info">
-                                        <div class="user-avatar">
-                                            <?php 
-                                            $avatars = [
-                                                'admin' => '👨‍💼',
-                                                'encadrant' => '👨‍🏫', 
-                                                'player' => '👨‍🎓'
-                                            ];
-                                            echo $avatars[$user_item['role']] ?? '👤';
-                                            ?>
+                                    <td class="user-info-cell">
+                                        <div class="user-avatar-table">
+                                            <?php echo strtoupper(substr($user_item['first_name'], 0, 1) . substr($user_item['last_name'], 0, 1)); ?>
                                         </div>
-                                        <div class="user-details">
-                                            <div class="user-name">
+                                        <div class="user-details-table">
+                                            <h4>
                                                 <?php echo htmlspecialchars($user_item['first_name'] . ' ' . $user_item['last_name']); ?>
                                                 <?php if ($user_item['id'] == $current_user['id']): ?>
                                                     <span class="current-user-badge">Vous</span>
                                                 <?php endif; ?>
-                                            </div>
-                                            <div class="user-meta">
-                                                <span>@<?php echo htmlspecialchars($user_item['username']); ?></span>
-                                                <span>•</span>
-                                                <span><?php echo htmlspecialchars($user_item['email']); ?></span>
-                                            </div>
+                                            </h4>
+                                            <p>@<?php echo htmlspecialchars($user_item['username']); ?> • <?php echo htmlspecialchars($user_item['email']); ?></p>
                                         </div>
                                     </td>
                                     <td class="user-role">
@@ -290,37 +279,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <div class="date-secondary"><?php echo date('H:i', strtotime($user_item['created_at'])); ?></div>
                                         </div>
                                     </td>
-                                    <td class="user-stats">
+                                    <td class="stats-cell">
                                         <?php if ($stats['total_games'] > 0): ?>
-                                            <div class="stats-summary">
-                                                <div class="stat-item">
-                                                    <span class="stat-value"><?php echo $stats['total_games']; ?></span>
-                                                    <span class="stat-label">parties</span>
-                                                </div>
-                                                <div class="stat-item">
-                                                    <span class="stat-value"><?php echo round($stats['avg_score'], 0); ?></span>
-                                                    <span class="stat-label">moy.</span>
-                                                </div>
-                                                <div class="stat-item">
-                                                    <span class="stat-value"><?php echo round($stats['avg_success_rate'], 1); ?>%</span>
-                                                    <span class="stat-label">réussite</span>
-                                                </div>
+                                            <div class="stat-item">
+                                                <span class="stat-label">Parties:</span>
+                                                <span class="stat-value"><?php echo $stats['total_games']; ?></span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-label">Score moy:</span>
+                                                <span class="stat-value"><?php echo round($stats['avg_score'], 0); ?></span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-label">Réussite:</span>
+                                                <span class="stat-value"><?php echo round($stats['avg_success_rate'], 1); ?>%</span>
                                             </div>
                                         <?php else: ?>
-                                            <span class="no-activity">Aucune activité</span>
+                                            <span class="activity-never">Aucune activité</span>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="user-activity">
+                                    <td class="activity-cell">
                                         <?php if ($stats['last_played']): ?>
-                                            <div class="activity-info">
-                                                <div class="activity-date"><?php echo date('d/m/Y', strtotime($stats['last_played'])); ?></div>
-                                                <div class="activity-time"><?php echo date('H:i', strtotime($stats['last_played'])); ?></div>
-                                            </div>
+                                            <?php echo date('d/m/Y', strtotime($stats['last_played'])); ?>
+                                            <br>
+                                            <small><?php echo date('H:i', strtotime($stats['last_played'])); ?></small>
                                         <?php else: ?>
-                                            <span class="no-activity">Jamais joué</span>
+                                            <span class="activity-never">Jamais joué</span>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="user-actions">
+                                    <td class="actions-cell">
                                         <?php if ($user_item['id'] != $current_user['id']): ?>
                                             <select onchange="changeUserRole(<?php echo $user_item['id']; ?>, this.value)" 
                                                     class="role-select"
