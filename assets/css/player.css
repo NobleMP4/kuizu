@@ -33,7 +33,10 @@
 }
 
 .logo img {
-    /* Bordures et ombres supprimées */
+    /* Fond blanc comme l'admin */
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 8px;
 }
 
 .logo-text h1 {
@@ -495,6 +498,9 @@
     .logo img {
         width: 25px;
         height: 25px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 6px;
+        padding: 4px;
     }
     
     .logo-text h1 {
@@ -730,6 +736,9 @@
     .logo img {
         width: 20px;
         height: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 5px;
+        padding: 3px;
     }
     
     .logo-text h1 {
