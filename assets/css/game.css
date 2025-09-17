@@ -15,7 +15,85 @@
     position: relative;
 }
 
-/* Header de jeu */
+/* Header de jeu simple */
+.game-header-simple {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 0.5rem 0;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.simple-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.game-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-logo img {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.game-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.game-score-simple {
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+}
+
+.game-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.info-btn, .exit-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: var(--white);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.info-btn:hover, .exit-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.exit-btn:hover {
+    background: var(--error-color);
+}
+
+/* Header de jeu (legacy) */
 .game-header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -672,7 +750,37 @@
 }
 
 @media (max-width: 768px) {
-    /* Header mobile compact */
+    /* Header simple mobile */
+    .game-header-simple {
+        padding: 0.375rem 0;
+    }
+    
+    .simple-header-content {
+        padding: 0 0.75rem;
+    }
+    
+    .game-logo img {
+        width: 25px;
+        height: 25px;
+        padding: 3px;
+    }
+    
+    .game-title {
+        font-size: 1rem;
+    }
+    
+    .game-score-simple {
+        font-size: 1rem;
+        padding: 0.375rem 0.75rem;
+    }
+    
+    .info-btn, .exit-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+    
+    /* Header mobile compact (legacy) */
     .game-header {
         padding: 0.5rem 0;
     }

@@ -61,35 +61,25 @@ if (!$is_participant) {
 </head>
 <body class="game-body">
     <div class="game-layout">
-        <!-- Header de jeu compact -->
-        <header class="game-header" id="gameHeader">
-            <div class="header-content">
-                <div class="game-info">
-                    <h1 title="<?php echo htmlspecialchars($session['quiz_title']); ?>">
-                        <?php echo htmlspecialchars(strlen($session['quiz_title']) > 20 ? substr($session['quiz_title'], 0, 20) . '...' : $session['quiz_title']); ?>
-                    </h1>
-                    <div class="game-meta">
-                        <span class="player-name">👤 <?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
-                        <span class="session-code">Code: <?php echo $session['session_code']; ?></span>
-                        <span class="player-score">🏆 <span id="playerScore"><?php echo $participant_data['total_score']; ?></span> pts</span>
-                    </div>
+        <!-- Header de jeu minimaliste -->
+        <header class="game-header-simple" id="gameHeader">
+            <div class="simple-header-content">
+                <div class="game-logo">
+                    <img src="../assets/images/logo.png" alt="Kuizu" width="30" height="30">
+                    <span class="game-title">Kuizu</span>
                 </div>
                 
-                <div class="game-status">
-                    <div class="status-indicator status-<?php echo $session['status']; ?>" id="gameStatus">
-                        <?php 
-                        $status_labels = [
-                            'waiting' => '⏳',
-                            'active' => '▶️',
-                            'paused' => '⏸️',
-                            'finished' => '✅'
-                        ];
-                        echo $status_labels[$session['status']] ?? $session['status'];
-                        ?>
-                    </div>
-                    <button onclick="toggleHeader()" class="header-toggle" id="headerToggle">
-                        ↕️
+                <div class="game-score-simple">
+                    <span id="playerScore"><?php echo $participant_data['total_score']; ?></span> pts
+                </div>
+                
+                <div class="game-actions">
+                    <button onclick="showGameInfo()" class="info-btn" title="Informations">
+                        ℹ️
                     </button>
+                    <a href="../player/dashboard.php" class="exit-btn" title="Quitter la session">
+                        ✕
+                    </a>
                 </div>
             </div>
         </header>
@@ -830,12 +820,64 @@ if (!$is_participant) {
             toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '→' : '←';
         }
         
-        function toggleHeader() {
-            const header = document.getElementById('gameHeader');
-            const toggle = document.getElementById('headerToggle');
+        function showGameInfo() {
+            const session = <?php echo json_encode($session); ?>;
+            const participant = <?php echo json_encode($participant_data); ?>;
             
-            header.classList.toggle('collapsed');
-            toggle.textContent = header.classList.contains('collapsed') ? '↓' : '↕️';
+            const infoHTML = `
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 400px; margin: 20px auto;">
+                    <h3 style="margin: 0 0 1rem 0; color: #374151; text-align: center;">${session.quiz_title}</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #6b7280;">👤 Joueur:</span>
+                            <span style="font-weight: 600;"><?php echo htmlspecialchars($current_user['first_name'] . ' ' . $current_user['last_name']); ?></span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #6b7280;">🔢 Code:</span>
+                            <span style="font-family: monospace; font-weight: 600;">${session.session_code}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #6b7280;">🏆 Score:</span>
+                            <span style="font-weight: 600; color: #224d71;">${participant.total_score} points</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #6b7280;">📊 Statut:</span>
+                            <span style="font-weight: 600;">${getStatusLabel(session.status)}</span>
+                        </div>
+                    </div>
+                    <button onclick="hideGameInfo()" style="width: 100%; margin-top: 1rem; padding: 0.5rem; background: #224d71; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                        Fermer
+                    </button>
+                </div>
+            `;
+            
+            // Créer et afficher l'overlay d'informations
+            const overlay = document.createElement('div');
+            overlay.id = 'gameInfoOverlay';
+            overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;';
+            overlay.innerHTML = infoHTML;
+            overlay.onclick = function(e) {
+                if (e.target === overlay) hideGameInfo();
+            };
+            
+            document.body.appendChild(overlay);
+        }
+        
+        function hideGameInfo() {
+            const overlay = document.getElementById('gameInfoOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+        
+        function getStatusLabel(status) {
+            const labels = {
+                'waiting': '⏳ En attente',
+                'active': '▶️ En cours',
+                'paused': '⏸️ En pause',
+                'finished': '✅ Terminé'
+            };
+            return labels[status] || status;
         }
         
         // Nettoyer les intervals avant de quitter
